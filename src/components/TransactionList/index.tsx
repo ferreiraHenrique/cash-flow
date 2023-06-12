@@ -27,7 +27,7 @@ export default function TransactionList() {
   const grid = "grid grid-cols-5 gap-4"
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {transactions} = useContext(TransactionsContext) as TransactionsContextType
+  const {transactions, removeTransaction} = useContext(TransactionsContext) as TransactionsContextType
 
   return (
     <>
@@ -62,7 +62,11 @@ export default function TransactionList() {
                   <a href="#" className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
                     <FontAwesomeIcon icon={faEdit} />
                   </a>
-                  <a href="#" className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250">
+                  <a
+                    href="#"
+                    className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250"
+                    onClick={() => removeTransaction(t)}
+                  >
                     <FontAwesomeIcon icon={faTrash} />
                   </a>
                 </div>
