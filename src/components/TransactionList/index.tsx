@@ -4,13 +4,14 @@ import { styled } from "styled-components"
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from "../Button"
-import { useContext} from "react"
-import ModalNewTransaction from "../ModalNewTransaction"
-import ModalProvider, { ModalContext } from "@/contexts/ModalContext"
+import { useContext, useState} from "react"
+import { ModalContext } from "@/contexts/ModalContext"
 import { ModalContextType } from "@/types/modal"
 import { TransactionsContext } from "@/contexts/TransactionsContext"
 import { ITransaction, TransactionsContextType } from "@/types/transaction"
 import {formatCurrency} from "@/helpers/formatCurrency"
+import ModalNewTransaction from "../ModalTransaction/new"
+import ModalUpdateTransaction from "../ModalTransaction/update"
 
 const TransactionListHeader = styled.div``
 
@@ -26,6 +27,9 @@ const TransactionItem = styled.li``
 export default function TransactionList() {
   const grid = "grid grid-cols-5 gap-4"
 
+  const [modalSelection, setModalSelection] = useState('')
+  const [transactionSelected, setTransactionSelected] = useState<ITransaction | null>(null)
+
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {transactions, removeTransaction} = useContext(TransactionsContext) as TransactionsContextType
 
@@ -34,7 +38,7 @@ export default function TransactionList() {
       <div className="bg-white rounded-xl py-4 px-4 mt-5 shadow-xl">
         <h5 className="font-semibold opacity-60 mb-2">
           Transações
-          <Button onClick={toggleModal} />
+          <Button onClick={() => {setModalSelection('new'); toggleModal()}} />
         </h5>
 
         <TransactionListHeader
@@ -59,7 +63,15 @@ export default function TransactionList() {
                 <span>{formatCurrency(t.discount)}</span>
                 <span>{formatCurrency(t.calcSubtotal())}</span>
                 <div className="flex justify-center gap-4">
-                  <a href="#" className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
+                  <a
+                    href="#"
+                    className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
+                    onClick={() => {
+                      setTransactionSelected(t);
+                      setModalSelection('update');
+                      toggleModal()
+                    }}
+                  >
                     <FontAwesomeIcon icon={faEdit} />
                   </a>
                   <a
@@ -71,7 +83,7 @@ export default function TransactionList() {
                   </a>
                 </div>
               </TransactionItem>
-              <hr className="my-2" />
+              <hr key={`hr-${t.id}`} className="my-2" />
             </>
           ))}
         </TransactionItemsList>
@@ -86,7 +98,8 @@ export default function TransactionList() {
         </TransactionListFooter>
       </div>
 
-      <ModalNewTransaction />
+      {modalSelection == "new" && <ModalNewTransaction />}
+      {modalSelection == "update" && transactionSelected && <ModalUpdateTransaction transaction={transactionSelected} />}
     </>
   )
 }

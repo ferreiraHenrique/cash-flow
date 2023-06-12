@@ -1,10 +1,9 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import Modal from "../Modal";
-import Input from "../Input";
 import { Form } from "@unform/web";
 import FormInput from "../FormInput";
 import { TransactionsContext } from "@/contexts/TransactionsContext";
-import { ITransaction, Transaction, TransactionsContextType } from "@/types/transaction";
+import { Transaction, TransactionsContextType } from "@/types/transaction";
 import {formatCurrency, unformatCurrency} from "@/helpers/formatCurrency";
 
 
@@ -13,19 +12,11 @@ export default function ModalNewTransaction() {
 
   const formRef = useRef(null)
   const handleFormSubmit = (data: any) => {
-    console.log(data)
     const transaction = new Transaction({
       id: 0,
-      name: data.transactionName,
-      amount: data.transactionAmount,
-      discount: data.transactionDiscount,
+      ...data
     })
     addTransaction(transaction)
-  }
-
-  const onConfirm = () => {
-    formRef.current.submitForm()
-    alert("CONFIRMOU")
   }
 
   const onInputAmount = (event: any) => {
@@ -34,20 +25,20 @@ export default function ModalNewTransaction() {
   }
 
   return <Modal
-    onConfirm={onConfirm}
+    onConfirm={() => formRef.current.submitForm()}
     title="Criar nova transação"
     confirmButtonText="Adicionar transação"
     children={
       <Form ref={formRef} onSubmit={handleFormSubmit}>
         <div className="mt-2 w-full">
           <div className="mb-4">
-            <FormInput name="transactionName" placeholder="Nome" />
+            <FormInput name="name" placeholder="Nome" />
           </div>
           <div className="mb-4">
-            <FormInput name="transactionAmount" placeholder="Valor (R$)" onInput={onInputAmount} />
+            <FormInput name="amount" placeholder="Valor (R$)" onInput={onInputAmount} />
           </div>
           <div className="mb-4">
-            <FormInput name="transactionDiscount" placeholder="Desconto (R$)" onInput={onInputAmount} />
+            <FormInput name="discount" placeholder="Desconto (R$)" onInput={onInputAmount} />
           </div>
         </div>
       </Form>
