@@ -16,7 +16,7 @@ function TransactionsProvider({
   ))
 
   const addTransaction = (transaction: ITransaction) => {
-    const newTransaction: ITransaction = {...transaction, id: Math.random()}
+    const newTransaction = new Transaction({...transaction, id: Math.random()})
     setTransactions([...transactions, newTransaction])
     setLocalStorageValue([...transactions, newTransaction])
   }
