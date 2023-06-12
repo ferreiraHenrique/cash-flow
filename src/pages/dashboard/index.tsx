@@ -7,6 +7,7 @@ import NavBar from '@/components/NavBar';
 import MonthResumeCard from '@/components/MonthResumeCard';
 import TransactionList from '@/components/TransactionList';
 import ModalProvider from '@/contexts/ModalContext';
+import TransactionsProvider from '@/contexts/TransactionsContext';
 
 
 const MainContainer = styled.main`
@@ -31,9 +32,11 @@ export default function DashboardPage() {
             <MonthResumeCard />
           </div>
 
-          <ModalProvider>
-            <TransactionList />
-          </ModalProvider>
+          <TransactionsProvider>
+            <ModalProvider>
+              <TransactionList />
+            </ModalProvider>
+          </TransactionsProvider>
         </Content>
       </MainContainer>
     </MainLayout>

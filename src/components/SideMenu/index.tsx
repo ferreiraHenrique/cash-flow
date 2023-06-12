@@ -23,7 +23,7 @@ export default function SideMenu() {
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 <i className="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
               </div>
-              <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboarda</span>
+              <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
             </a>
           </S.MenuItem>
         </S.MenuItemList>
