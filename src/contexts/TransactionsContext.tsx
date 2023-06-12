@@ -27,8 +27,14 @@ function TransactionsProvider({
     setLocalStorageValue(filtered)
   }
 
+  const updateTransaction = (transaction: ITransaction) => {
+    const filtered = transactions.filter(t => t.id != transaction.id)
+    setTransactions([...filtered, transaction])
+    setLocalStorageValue([...filtered, transaction])
+  }
+
   return (
-    <TransactionsContext.Provider value={{transactions, addTransaction, removeTransaction}}>
+    <TransactionsContext.Provider value={{transactions, addTransaction, removeTransaction, updateTransaction}}>
       {children}
     </TransactionsContext.Provider>
   )
