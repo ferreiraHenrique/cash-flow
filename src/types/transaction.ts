@@ -40,4 +40,5 @@ export class Transaction implements ITransaction {
 export type TransactionsContextType = {
   transactions: ITransaction[],
   addTransaction: (transaction: ITransaction) => void
+  removeTransaction: (transaction: ITransaction) => void
 }
