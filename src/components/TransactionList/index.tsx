@@ -8,6 +8,9 @@ import { useContext} from "react"
 import ModalNewTransaction from "../ModalNewTransaction"
 import ModalProvider, { ModalContext } from "@/contexts/ModalContext"
 import { ModalContextType } from "@/types/modal"
+import { TransactionsContext } from "@/contexts/TransactionsContext"
+import { ITransaction, TransactionsContextType } from "@/types/transaction"
+import {formatCurrency} from "@/helpers/formatCurrency"
 
 const TransactionListHeader = styled.div``
 
@@ -24,6 +27,7 @@ export default function TransactionList() {
   const grid = "grid grid-cols-5 gap-4"
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
+  const {transactions} = useContext(TransactionsContext) as TransactionsContextType
 
   return (
     <>
@@ -44,54 +48,37 @@ export default function TransactionList() {
         <hr className="mt-4 mb-2" />
 
         <TransactionItemsList>
-          <>
-            <TransactionItem
-              className={`${grid} opacity-80 text-sm`}
-            >
-              <span>Aluguel</span>
-              <span>R$ 1.500,00</span>
-              <span>R$ 0,00</span>
-              <span>R$ 1.500,00</span>
-              <div className="flex justify-center gap-4">
-                <a href="#" className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
-                  <FontAwesomeIcon icon={faEdit} />
-                </a>
-                <a href="#" className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250">
-                  <FontAwesomeIcon icon={faTrash} />
-                </a>
-              </div>
-            </TransactionItem>
-            <hr className="my-2" />
-          </>
-
-          <>
-            <TransactionItem
-              className={`${grid} opacity-80 text-sm`}
-            >
-              <span>Condomínio</span>
-              <span>R$ 495,11</span>
-            </TransactionItem>
-            <hr className="my-2" />
-          </>
-
-          <>
-            <TransactionItem
-              className={`${grid} opacity-80 text-sm`}
-            >
-              <span>CPFL</span>
-              <span>R$ 120,00</span>
-            </TransactionItem>
-            <hr className="my-2" />
-          </>
+          {transactions.map(t => (
+            <>
+              <TransactionItem
+                className={`${grid} opacity-80 text-sm`}
+                key={t.id}
+              >
+                <span>{t.name}</span>
+                <span>{formatCurrency(t.amount)}</span>
+                <span>{formatCurrency(t.discount)}</span>
+                <span>{formatCurrency(t.calcSubtotal())}</span>
+                <div className="flex justify-center gap-4">
+                  <a href="#" className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
+                    <FontAwesomeIcon icon={faEdit} />
+                  </a>
+                  <a href="#" className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250">
+                    <FontAwesomeIcon icon={faTrash} />
+                  </a>
+                </div>
+              </TransactionItem>
+              <hr className="my-2" />
+            </>
+          ))}
         </TransactionItemsList>
 
         <TransactionListFooter
           className={`${grid} opacity-60 text-sm font-bold`}
         >
           <span>Total</span>
-          <span>R$ 9999,99</span>
-          <span>R$ 9999,99</span>
-          <span>R$ 9999,99</span>
+          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.amount), 0))}</span>
+          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.discount), 0))}</span>
+          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.calcSubtotal()), 0))}</span>
         </TransactionListFooter>
       </div>
 
