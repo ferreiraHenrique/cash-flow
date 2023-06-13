@@ -10,10 +10,7 @@ export default function ModalNewTransaction() {
 
   const formRef = useRef(null)
   const handleFormSubmit = (data: any) => {
-    const transaction = new Transaction({
-      id: 0,
-      ...data
-    })
+    const transaction = new Transaction({...data})
     addTransaction(transaction)
   }
 

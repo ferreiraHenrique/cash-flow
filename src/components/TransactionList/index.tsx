@@ -33,6 +33,16 @@ export default function TransactionList() {
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {transactions, removeTransaction} = useContext(TransactionsContext) as TransactionsContextType
 
+  const totalAmount = transactions.reduce((total: number, t: ITransaction) => {
+    if (t.isCredit) return total + t.amount
+    return total - t.amount
+  }, 0)
+
+  const totalSubtotal = transactions.reduce((total: number, t: ITransaction) => {
+    if (t.isCredit) return total + t.calcSubtotal()
+    return total - t.calcSubtotal()
+  }, 0)
+
   return (
     <>
       <div className="bg-white rounded-xl py-4 px-4 mt-5 shadow-xl">
@@ -58,10 +68,10 @@ export default function TransactionList() {
                 className={`${grid} opacity-80 text-sm`}
                 key={t.id}
               >
-                <span>{t.name}</span>
-                <span>{formatCurrency(t.amount)}</span>
+                <span>{t.displayName()}</span>
+                <span>{t.displayAmount()}</span>
                 <span>{formatCurrency(t.discount)}</span>
-                <span>{formatCurrency(t.calcSubtotal())}</span>
+                <span>{t.displaySubtotal()}</span>
                 <div className="flex justify-center gap-4">
                   <a
                     href="#"
@@ -92,9 +102,9 @@ export default function TransactionList() {
           className={`${grid} opacity-60 text-sm font-bold`}
         >
           <span>Total</span>
-          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.amount), 0))}</span>
+          <span>{formatCurrency(totalAmount)}</span>
           <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.discount), 0))}</span>
-          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.calcSubtotal()), 0))}</span>
+          <span>{formatCurrency(totalSubtotal)}</span>
         </TransactionListFooter>
       </div>
 
