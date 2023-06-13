@@ -1,6 +1,9 @@
 import { formatCurrency, unformatCurrency } from "@/helpers/formatCurrency";
 import { Form } from "@unform/web";
 import FormInput from "../FormInput";
+import FormInlineSelect from "../FormInlineSelect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 interface ModalTransactionFormProps {
   formRef: any
@@ -29,6 +32,31 @@ export default function ModalTransactionForm(props: ModalTransactionFormProps) {
         </div>
         <div className="mb-4">
           <FormInput name="discount" placeholder="Desconto (R$)" onInput={onInputAmount} />
+        </div>
+        <div className="mb-4">
+          <FormInlineSelect
+            name="isCredit"
+            options={[
+              {
+                value: true,
+                children: (
+                  <>
+                    <FontAwesomeIcon icon={faArrowUp} />
+                    <span className="ml-2">Crédito</span>
+                  </>
+                )
+              },
+              {
+                value: false,
+                children: (
+                  <>
+                  <FontAwesomeIcon icon={faArrowDown} />
+                  <span className="ml-2">Débito</span>
+                </>
+                )
+              }
+            ]}
+          />
         </div>
       </div>
     </Form>

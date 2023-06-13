@@ -36,6 +36,7 @@ export default function ModalUpdateTransaction(props: ModalUpdateTransactionProp
         name: props.transaction.name,
         amount: formatCurrency(props.transaction.amount),
         discount: formatCurrency(props.transaction.discount),
+        isCredit: props.transaction.isCredit,
       }}
     />}
   />
