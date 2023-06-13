@@ -3,6 +3,7 @@
 import '@/app/globals.css'
 import '@/app/css/nucleo-icons.css'
 import {Open_Sans} from 'next/font/google'
+import StyledComponentsRegistry from '@/lib/registry'
 
 const open_sans = Open_Sans({subsets: ['latin'], weight: ["300", "400", "500", "600", "700", "800"]})
 
@@ -19,10 +20,16 @@ export default function MainLayout({
   const classes = `${open_sans.className}`
 
   return (
-    <div
-      className={classes}
-    >
-      {children}
-    </div>
+    <html lang="pt">
+      <body>
+        <StyledComponentsRegistry>
+          <div
+            className={classes}
+          >
+            {children}
+          </div>
+        </StyledComponentsRegistry>
+      </body>
+    </html>
   )
 }
