@@ -3,11 +3,12 @@ import Button from "../Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ModalNewMonth from "../ModalMonth/new";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { ModalContextType } from "@/types/modal";
 import { MonthsContext } from "@/contexts/MonthContext";
-import { MonthsContextType } from "@/types/month";
+import { IMonth, MonthsContextType } from "@/types/month";
+import ModalUpdateMonth from "../ModalMonth/update";
 
 
 const ItemsList = styled.ul`
@@ -19,6 +20,9 @@ const ItemsList = styled.ul`
 export default function MonthList() {
   const grid = "grid grid-cols-2 gap-4"
 
+  const [modalSelection, setModalSelection] = useState('')
+  const [monthSelected, setMonthSelected] = useState<IMonth | null>(null)
+
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {months, removeMonth} = useContext(MonthsContext) as MonthsContextType
 
@@ -29,7 +33,10 @@ export default function MonthList() {
           Meses
           <Button
             text="Novo"
-            onClick={() => toggleModal()}
+            onClick={() => {
+              setModalSelection('new')
+              toggleModal()
+            }}
           />
         </h5>
 
@@ -46,6 +53,11 @@ export default function MonthList() {
                 <div className="flex justify-center gap-4">
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
+                    onClick={() => {
+                      setMonthSelected(m)
+                      setModalSelection('update')
+                      toggleModal()
+                    }}
                   >
                     <FontAwesomeIcon icon={faEdit} />
                   </a>
@@ -63,7 +75,8 @@ export default function MonthList() {
         </ItemsList>
       </div>
 
-      <ModalNewMonth />
+      {modalSelection == 'new' && <ModalNewMonth />}
+      {modalSelection == 'update' && monthSelected && <ModalUpdateMonth month={monthSelected} />}
     </>
   )
 }

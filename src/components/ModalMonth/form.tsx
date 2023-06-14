@@ -3,7 +3,7 @@ import FormInput from "../FormInput"
 
 interface ModalMonthFormProps {
   formRef: any
-  handlerFormSubmit: (data: any) => void
+  handleFormSubmit: (data: any) => void
   initialData?: any
 }
 
@@ -11,7 +11,7 @@ export default function ModalMonthForm(props: ModalMonthFormProps) {
   return (
     <Form
       ref={props.formRef}
-      onSubmit={props.handlerFormSubmit}
+      onSubmit={props.handleFormSubmit}
       initialData={props.initialData}
     >
       <div className="mt-2 w-full">
