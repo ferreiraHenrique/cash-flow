@@ -8,7 +8,7 @@ const Container = styled.button`
 `
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-
+  text: string
 }
 
 export default function Button(props: ButtonProps){
@@ -17,7 +17,7 @@ export default function Button(props: ButtonProps){
       {...props}
       className="rounded px-4 ml-2 text-sm"
     >
-      Novo
+      {props.text}
     </Container>
   )
 }

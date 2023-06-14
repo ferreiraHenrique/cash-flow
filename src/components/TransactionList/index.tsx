@@ -48,7 +48,10 @@ export default function TransactionList() {
       <div className="bg-white rounded-xl py-4 px-4 mt-5 shadow-xl">
         <h5 className="font-semibold opacity-60 mb-2">
           Transações
-          <Button onClick={() => {setModalSelection('new'); toggleModal()}} />
+          <Button
+            text="Novo"
+            onClick={() => {setModalSelection('new'); toggleModal()}}
+          />
         </h5>
 
         <TransactionListHeader

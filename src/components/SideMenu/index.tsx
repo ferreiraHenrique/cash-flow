@@ -1,5 +1,7 @@
 'use client'
 
+import { faCalendar, faDashboard } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as S from './style';
 
 
@@ -21,9 +23,20 @@ export default function SideMenu() {
               href="/dashboard"
             >
               <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i className="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
+                <FontAwesomeIcon icon={faDashboard} className='text-blue-500' />
               </div>
               <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
+            </a>
+          </S.MenuItem>
+          <S.MenuItem className="mt-0.5 w-full rounded-2xl">
+            <a
+              className="py-2.7 bg-blue-500/13 opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors font-normal"
+              href="/meses"
+            >
+              <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <FontAwesomeIcon icon={faCalendar} className='text-blue-500' />
+              </div>
+              <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Meses</span>
             </a>
           </S.MenuItem>
         </S.MenuItemList>
