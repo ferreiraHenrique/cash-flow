@@ -24,4 +24,5 @@ export type MonthsContextType = {
   months: IMonth[]
   addMonth: (month: IMonth) => void
   removeMonth: (month: IMonth) => void
+  updateMonth: (month: IMonth) => void
 }

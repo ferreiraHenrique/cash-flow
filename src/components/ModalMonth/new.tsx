@@ -20,7 +20,7 @@ export default function ModalNewMonth() {
     children={
       <ModalMonthForm
         formRef={formRef}
-        handlerFormSubmit={handleFormSubmit}
+        handleFormSubmit={handleFormSubmit}
       />
     }
   />
