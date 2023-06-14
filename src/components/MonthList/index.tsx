@@ -20,7 +20,7 @@ export default function MonthList() {
   const grid = "grid grid-cols-2 gap-4"
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {months} = useContext(MonthsContext) as MonthsContextType
+  const {months, removeMonth} = useContext(MonthsContext) as MonthsContextType
 
   return (
     <>
@@ -44,10 +44,15 @@ export default function MonthList() {
               <li className={`${grid} opacity-80 text-sm`}>
                 <span>{m.name}</span>
                 <div className="flex justify-center gap-4">
-                  <a className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
+                  <a
+                    className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
+                  >
                     <FontAwesomeIcon icon={faEdit} />
                   </a>
-                  <a className="opacity-60 hover:opacity-80 transition-all ease-in duration-250">
+                  <a
+                    className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
+                    onClick={() => removeMonth(m)}
+                  >
                     <FontAwesomeIcon icon={faTrash} />
                   </a>
                 </div>
