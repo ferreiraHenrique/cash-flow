@@ -23,4 +23,5 @@ export class Month implements IMonth {
 export type MonthsContextType = {
   months: IMonth[]
   addMonth: (month: IMonth) => void
+  removeMonth: (month: IMonth) => void
 }

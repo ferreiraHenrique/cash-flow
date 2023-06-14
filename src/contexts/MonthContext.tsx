@@ -21,8 +21,14 @@ function MonthsProvider({
     setLocalStorageValue([...months, newMonth])
   }
 
+  const removeMonth = (month: IMonth) => {
+    const filtered = months.filter(m => m.id != month.id)
+    setMonths(filtered)
+    setLocalStorageValue(filtered)
+  }
+
   return (
-    <MonthsContext.Provider value={{months, addMonth}}>
+    <MonthsContext.Provider value={{months, addMonth, removeMonth}}>
       {children}
     </MonthsContext.Provider>
   )
