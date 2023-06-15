@@ -81,7 +81,7 @@ export type MonthsContextType = {
   monthSelected: IMonth | null
   selectMonth: (month: IMonth) => void
   addMonth: (month: IMonth) => void
-  removeMonth: (month: IMonth) => void
+  removeMonth: () => void
   updateMonth: (data?: any) => void
   addTransaction: (transaction: ITransaction) => void
   removeTransaction: (transaction: ITransaction) => void

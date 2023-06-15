@@ -36,18 +36,30 @@ function MonthsProvider({
     setLocalStorageMonths([...months, newMonth])
   }
 
-  const removeMonth = (month: IMonth) => {
-    const filtered = months.filter(m => m.id != month.id)
-    setMonths(filtered)
-    setLocalStorageMonths(filtered)
+  const removeMonth = () => {
+    if (!monthSelected) return
+
+    const filtredTransactions = transactions.filter(t => t.monthId != monthSelected.id)
+    setLocalStorageTransactions(filtredTransactions)
+
+    const filteredMonths = months.filter(m => m.id != monthSelected.id)
+    setMonths(filteredMonths)
+    setLocalStorageMonths(filteredMonths)
+    setLocalStorageMonthSelected(null)
   }
 
   const updateMonth = (data?: any) => {
     if(!monthSelected) return
 
-    const filtered = months.filter(m => m.id != monthSelected.id)
-    setMonths([...filtered, data? new Month(data) : monthSelected])
-    setLocalStorageMonths([...filtered, monthSelected])
+    const swap = months.map(m => {
+      if (m.id != monthSelected.id) return m
+      if (!data) return m
+
+      return new Month({...data, id: monthSelected.id})
+    })
+
+    setMonths(swap)
+    setLocalStorageMonths(swap)
     selectMonth(monthSelected)
   }
 
