@@ -1,15 +1,23 @@
 import Button from "@/components/Button";
 import FormInput from "@/components/FormInput";
 import MainLayout from "@/components/MainLayout";
+import useLocalStorage from "@/hooks/localstorage";
+import { RegisterUser } from "@/types/user";
 import { Form } from "@unform/web";
+import { useRouter } from "next/router";
 import { useRef } from "react";
 
 
 export default function SignupPage() {
+  const [localStorageValue, setLocalStorageValue] = useLocalStorage("user", {})
+
   const formRef = useRef(null)
+  const router = useRouter()
 
   const submit = (data: any) => {
-    console.log(data)
+    const register = new RegisterUser(data)
+    setLocalStorageValue(register.register())
+    router.push('/dashboard')
   }
 
   return (
