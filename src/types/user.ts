@@ -6,6 +6,7 @@ export interface IUser {
   email: string
   password: string
   checkPassword: (password: string) => boolean
+  displayName: () => string
 }
 
 export class User implements IUser {
@@ -23,6 +24,10 @@ export class User implements IUser {
 
   checkPassword(password: string): boolean {
     return this.password == btoa(password)
+  }
+
+  displayName(): string {
+    return this.name.split(" ")[0]
   }
 }
 

@@ -8,11 +8,11 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 
 
-export default function SignupPage() {
+export default function SigninPage() {
   const [localStorageUsers, setLocalStorageUsers] = useLocalStorage("users", [])
-  const users: IUser[] = localStorageUsers.map((d: any) => new User(d))
+  const users: IUser[] = (localStorageUsers || []).map((d: any) => new User(d))
 
-  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", [])
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", {})
 
   const formRef = useRef(null)
   const router = useRouter()
