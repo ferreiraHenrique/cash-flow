@@ -5,6 +5,7 @@ export interface IUser {
   name: string
   email: string
   password: string
+  checkPassword: (password: string) => boolean
 }
 
 export class User implements IUser {
@@ -18,6 +19,10 @@ export class User implements IUser {
     this.name = data.name
     this.email = data.email
     this.password = data.password
+  }
+
+  checkPassword(password: string): boolean {
+    return this.password == btoa(password)
   }
 }
 
