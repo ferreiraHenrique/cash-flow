@@ -8,6 +8,7 @@ export interface ITransaction {
   amount: number
   discount: number
   isCredit: boolean
+  monthId: string
   displayName: () => string
   calcSubtotal: () => number
   displayAmount: () => string
@@ -20,6 +21,7 @@ export class Transaction implements ITransaction {
   amount: number
   discount: number
   isCredit: boolean
+  monthId: string
 
   constructor(data?: any) {
     if (data?.id) {
@@ -46,6 +48,8 @@ export class Transaction implements ITransaction {
     } else {
       this.discount = unformatCurrency(data?.discount.toString() || '0')
     }
+
+    this.monthId = data?.monthId
   }
 
   public displayName(): string {

@@ -4,17 +4,14 @@ import ModalMonthForm from "./form";
 import { useContext, useRef } from "react";
 import { MonthsContext } from "@/contexts/MonthContext";
 
-interface ModalUpdateMonthProps {
-  month: IMonth
-}
 
-export default function ModalUpdateMonth(props: ModalUpdateMonthProps) {
-  const {updateMonth} = useContext(MonthsContext) as MonthsContextType
+export default function ModalUpdateMonth() {
+  const {monthSelected, updateMonth} = useContext(MonthsContext) as MonthsContextType
 
   const formRef = useRef(null)
 
   const handleFormSubmit = (data: any) => {
-    updateMonth(new Month({id: props.month.id, ...data}))
+    updateMonth(data)
   }
 
   return <Modal
@@ -25,7 +22,7 @@ export default function ModalUpdateMonth(props: ModalUpdateMonthProps) {
       <ModalMonthForm
         formRef={formRef}
         handleFormSubmit={handleFormSubmit}
-        initialData={{name: props.month.name}}
+        initialData={{name: monthSelected?.name}}
       />
     }
   />

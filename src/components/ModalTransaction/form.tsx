@@ -4,6 +4,9 @@ import FormInput from "../FormInput";
 import FormInlineSelect from "../FormInlineSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { MonthsContextType } from "@/types/month";
+import { MonthsContext } from "@/contexts/MonthContext";
+import { useContext } from "react";
 
 interface ModalTransactionFormProps {
   formRef: any
@@ -12,6 +15,8 @@ interface ModalTransactionFormProps {
 }
 
 export default function ModalTransactionForm(props: ModalTransactionFormProps) {
+  const {monthSelected} = useContext(MonthsContext) as MonthsContextType
+
   const onInputAmount = (event: any) => {
     const formatted = formatCurrency(unformatCurrency(event.target.value || 0))
     event.target.value = formatted
@@ -58,6 +63,11 @@ export default function ModalTransactionForm(props: ModalTransactionFormProps) {
             ]}
           />
         </div>
+
+        <FormInput
+          name="monthId"
+          defaultValue={monthSelected?.id}
+        />
       </div>
     </Form>
   )

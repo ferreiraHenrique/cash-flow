@@ -7,11 +7,12 @@ import Button from "../Button"
 import { useContext, useState} from "react"
 import { ModalContext } from "@/contexts/ModalContext"
 import { ModalContextType } from "@/types/modal"
-import { TransactionsContext } from "@/contexts/TransactionsContext"
-import { ITransaction, TransactionsContextType } from "@/types/transaction"
+import { ITransaction } from "@/types/transaction"
 import {formatCurrency} from "@/helpers/formatCurrency"
 import ModalNewTransaction from "../ModalTransaction/new"
 import ModalUpdateTransaction from "../ModalTransaction/update"
+import { MonthsContext } from "@/contexts/MonthContext"
+import { MonthsContextType } from "@/types/month"
 
 const TransactionListHeader = styled.div``
 
@@ -31,17 +32,11 @@ export default function TransactionList() {
   const [transactionSelected, setTransactionSelected] = useState<ITransaction | null>(null)
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {transactions, removeTransaction} = useContext(TransactionsContext) as TransactionsContextType
+  const {monthSelected, removeTransaction} = useContext(MonthsContext) as MonthsContextType
 
-  const totalAmount = transactions.reduce((total: number, t: ITransaction) => {
-    if (t.isCredit) return total + t.amount
-    return total - t.amount
-  }, 0)
-
-  const totalSubtotal = transactions.reduce((total: number, t: ITransaction) => {
-    if (t.isCredit) return total + t.calcSubtotal()
-    return total - t.calcSubtotal()
-  }, 0)
+  if (!monthSelected) {
+    return <></>
+  }
 
   return (
     <>
@@ -65,7 +60,7 @@ export default function TransactionList() {
         <hr className="mt-4 mb-2" />
 
         <TransactionItemsList>
-          {transactions.map(t => (
+          {monthSelected && monthSelected.transactions.map(t => (
             <>
               <TransactionItem
                 className={`${grid} opacity-80 text-sm`}
@@ -105,9 +100,9 @@ export default function TransactionList() {
           className={`${grid} opacity-60 text-sm font-bold`}
         >
           <span>Total</span>
-          <span>{formatCurrency(totalAmount)}</span>
-          <span>{formatCurrency(transactions.reduce((total: number, t: ITransaction) => (total + t.discount), 0))}</span>
-          <span>{formatCurrency(totalSubtotal)}</span>
+          <span>{formatCurrency(monthSelected?.calcTotalAmount() || 0)}</span>
+          <span>{formatCurrency(monthSelected?.calcTotalDiscount() || 0)}</span>
+          <span>{formatCurrency(monthSelected?.calcTotalSubtotal() || 0)}</span>
         </TransactionListFooter>
       </div>
 

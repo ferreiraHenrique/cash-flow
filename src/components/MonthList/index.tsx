@@ -7,8 +7,9 @@ import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { ModalContextType } from "@/types/modal";
 import { MonthsContext } from "@/contexts/MonthContext";
-import { IMonth, MonthsContextType } from "@/types/month";
+import { MonthsContextType } from "@/types/month";
 import ModalUpdateMonth from "../ModalMonth/update";
+import { formatCurrency } from "@/helpers/formatCurrency";
 
 
 const ItemsList = styled.ul`
@@ -18,13 +19,12 @@ const ItemsList = styled.ul`
 
 
 export default function MonthList() {
-  const grid = "grid grid-cols-2 gap-4"
+  const grid = "grid grid-cols-5 gap-4"
 
   const [modalSelection, setModalSelection] = useState('')
-  const [monthSelected, setMonthSelected] = useState<IMonth | null>(null)
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {months, removeMonth} = useContext(MonthsContext) as MonthsContextType
+  const {months, monthSelected, selectMonth, removeMonth} = useContext(MonthsContext) as MonthsContextType
 
   return (
     <>
@@ -42,6 +42,9 @@ export default function MonthList() {
 
         <div className={`${grid} opacity-60 text-sm`}>
           <span>Nome</span>
+          <span>Crédito</span>
+          <span>Débito</span>
+          <span>Saldo</span>
         </div>
         <hr className="mt-4 mb-2" />
 
@@ -50,11 +53,14 @@ export default function MonthList() {
             <>
               <li className={`${grid} opacity-80 text-sm`}>
                 <span>{m.name}</span>
+                <span>{formatCurrency(m.calcTotalCredit())}</span>
+                <span>{formatCurrency(m.calcTotalDebit())}</span>
+                <span>{formatCurrency(m.calcTotalCredit() - m.calcTotalDebit())}</span>
                 <div className="flex justify-center gap-4">
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
                     onClick={() => {
-                      setMonthSelected(m)
+                      selectMonth(m)
                       setModalSelection('update')
                       toggleModal()
                     }}
@@ -63,7 +69,10 @@ export default function MonthList() {
                   </a>
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
-                    onClick={() => removeMonth(m)}
+                    onClick={() => {
+                      selectMonth(m)
+                      removeMonth()
+                    }}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </a>
@@ -76,7 +85,7 @@ export default function MonthList() {
       </div>
 
       {modalSelection == 'new' && <ModalNewMonth />}
-      {modalSelection == 'update' && monthSelected && <ModalUpdateMonth month={monthSelected} />}
+      {modalSelection == 'update' && monthSelected && <ModalUpdateMonth />}
     </>
   )
 }
