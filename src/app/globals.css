@@ -35,3 +35,15 @@ body {
 a {
   cursor: pointer
 }
+
+h5 {
+  color: #344767;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.375;
+}
+
+.default-button {
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+}
