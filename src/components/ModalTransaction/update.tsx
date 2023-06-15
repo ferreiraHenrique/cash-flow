@@ -6,6 +6,8 @@ import { useContext, useRef } from "react";
 import { formatCurrency } from "@/helpers/formatCurrency";
 import { TransactionsContext } from "@/contexts/TransactionsContext";
 import ModalTransactionForm from "./form";
+import { MonthsContext } from "@/contexts/MonthContext";
+import { MonthsContextType } from "@/types/month";
 
 
 interface ModalUpdateTransactionProps {
@@ -13,7 +15,7 @@ interface ModalUpdateTransactionProps {
 }
 
 export default function ModalUpdateTransaction(props: ModalUpdateTransactionProps) {
-  const {updateTransaction} = useContext(TransactionsContext) as TransactionsContextType
+  const {updateTransaction} = useContext(MonthsContext) as MonthsContextType
 
   const formRef = useRef(null)
 
