@@ -4,7 +4,6 @@ import SideMenu from '@/components/SideMenu';
 import MainLayout from '@/components/MainLayout';
 import { styled } from 'styled-components';
 import NavBar from '@/components/NavBar';
-import MonthResumeCard from '@/components/MonthResumeCard';
 import TransactionList from '@/components/TransactionList';
 import ModalProvider from '@/contexts/ModalContext';
 import TransactionsProvider from '@/contexts/TransactionsContext';
