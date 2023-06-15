@@ -5,12 +5,15 @@ import { MonthsContextType } from "@/types/month";
 
 
 export default function MonthListResumeCard() {
-  const {months} = useContext(MonthsContext) as MonthsContextType
+  const {months, selectMonth} = useContext(MonthsContext) as MonthsContextType
 
   return (
     <>
       {months.map(m => (
-        <MonthResumeCard month={m} />
+        <MonthResumeCard
+          month={m}
+          onClick={selectMonth}
+        />
       ))}
     </>
   )

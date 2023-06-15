@@ -8,11 +8,14 @@ const MonthBalance = styled.p`
 
 interface MonthResumeCardProps {
   month: IMonth
+  onClick?: (month: IMonth) => void
 }
 
 export default function MonthResumeCard(props: MonthResumeCardProps) {
   return (
-    <div className=''>
+    <div
+      onClick={() => props.onClick? props.onClick(props.month) : ''}
+    >
       <div className="bg-white w-full max-w-full py-4 px-4 mb-6 rounded-xl shadow-xl">
         <h5 className="mb-0 font-sans text-sm font-semibold leading-normal uppercase opacity-60">
           {props.month.name}
