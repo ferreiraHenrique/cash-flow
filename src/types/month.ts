@@ -8,6 +8,8 @@ export interface IMonth {
   calcTotalAmount: () => number
   calcTotalDiscount: () => number
   calcTotalSubtotal: () => number
+  calcTotalCredit: () => number
+  calcTotalDebit: () => number
 }
 
 
@@ -54,6 +56,24 @@ export class Month implements IMonth {
       return total - t.calcSubtotal()
     }, 0)
   };
+
+  calcTotalCredit(): number {
+    return this.transactions.filter(
+      t => t.isCredit
+    ).reduce(
+      (total: number, t: ITransaction) => total + t.amount,
+      0
+    )
+  }
+
+  calcTotalDebit(): number {
+    return this.transactions.filter(
+      t => !t.isCredit
+    ).reduce(
+      (total: number, t: ITransaction) => total + t.amount,
+      0
+    )
+  }
 }
 
 export type MonthsContextType = {
