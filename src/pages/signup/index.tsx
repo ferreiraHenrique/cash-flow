@@ -9,15 +9,20 @@ import { useRef } from "react";
 
 
 export default function SignupPage() {
-  const [localStorageValue, setLocalStorageValue] = useLocalStorage("user", {})
+  const [localStorageUsers, setLocalStorageUsers] = useLocalStorage("users", [])
 
   const formRef = useRef(null)
   const router = useRouter()
 
   const submit = (data: any) => {
+    if (localStorageUsers.filter((u: any) => u.email == data.email).length) {
+      alert("Já existe")
+      return
+    }
+
     const register = new RegisterUser(data)
-    setLocalStorageValue(register.register())
-    router.push('/dashboard')
+    setLocalStorageUsers([...localStorageUsers, register.register()])
+    router.push("/signin")
   }
 
   return (
