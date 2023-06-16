@@ -43,6 +43,10 @@ h5 {
   line-height: 1.375;
 }
 
+p {
+  color: #344767;
+}
+
 .default-button {
   border: 1px solid var(--main-color);
   color: var(--main-color);
