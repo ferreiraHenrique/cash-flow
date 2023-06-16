@@ -17,7 +17,7 @@ const MainContainer = styled.main`
 
 const Content = styled.div``
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   return (
     <MainLayout>
       <SideMenu />
