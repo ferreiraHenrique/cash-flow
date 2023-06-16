@@ -3,7 +3,8 @@
 import '@/app/globals.css'
 import '@/app/css/nucleo-icons.css'
 import {Open_Sans} from 'next/font/google'
-import StyledComponentsRegistry from '@/lib/registry'
+import { useSession } from 'next-auth/react'
+import AccessDenied from '../AccessDenied'
 
 const open_sans = Open_Sans({subsets: ['latin'], weight: ["300", "400", "500", "600", "700", "800"]})
 
@@ -17,19 +18,22 @@ export default function MainLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { data: session } = useSession()
+  if (!session) {
+    return (
+      <AccessDenied />
+    )
+  }
+
   const classes = `${open_sans.className}`
 
   return (
-    <html lang="pt">
-      <body>
-        <StyledComponentsRegistry>
-          <div
-            className={classes}
-          >
-            {children}
-          </div>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
+    <>
+      <div
+        className={classes}
+      >
+        {children}
+      </div>
+    </>
   )
 }
