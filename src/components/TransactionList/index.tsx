@@ -1,6 +1,5 @@
 'use client'
 
-import { styled } from "styled-components"
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from "../Button"
@@ -13,17 +12,8 @@ import ModalNewTransaction from "../ModalTransaction/new"
 import ModalUpdateTransaction from "../ModalTransaction/update"
 import { MonthsContext } from "@/contexts/MonthContext"
 import { MonthsContextType } from "@/types/month"
+import Swal from 'sweetalert2'
 
-const TransactionListHeader = styled.div``
-
-const TransactionListFooter = styled.div``
-
-const TransactionItemsList = styled.ul`
-  max-height: 200px;
-  overflow-y: scroll;
-`
-
-const TransactionItem = styled.li``
 
 export default function TransactionList() {
   const grid = "grid grid-cols-5 gap-4"
@@ -34,6 +24,18 @@ export default function TransactionList() {
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {monthSelected, removeTransaction} = useContext(MonthsContext) as MonthsContextType
 
+  const handleRemove = async (t: ITransaction) => {
+    Swal.fire({text: "Excluindo transação", showConfirmButton: false})
+    Swal.showLoading()
+
+    if (!await removeTransaction(t)) {
+      Swal.fire("Ops", "não foi possível remover a transação", "error")
+      return
+    }
+
+    Swal.close()
+  }
+
   if (!monthSelected) {
     return <></>
   }
@@ -42,27 +44,27 @@ export default function TransactionList() {
     <>
       <div className="bg-white rounded-xl py-4 px-4 mt-5 shadow-xl">
         <h5 className="font-semibold opacity-60 mb-2">
-          Transações
+          Transações ({monthSelected.name})
           <Button
             text="Novo"
             onClick={() => {setModalSelection('new'); toggleModal()}}
           />
         </h5>
 
-        <TransactionListHeader
+        <div
           className={`${grid} opacity-60 text-sm`}
         >
           <span>Nome</span>
           <span>Valor</span>
           <span>Desconto</span>
           <span>Subtotal</span>
-        </TransactionListHeader>
+        </div>
         <hr className="mt-4 mb-2" />
 
-        <TransactionItemsList>
+        <ul className="max-h-52 overflow-y-scroll">
           {monthSelected && monthSelected.transactions.map(t => (
             <>
-              <TransactionItem
+              <li
                 className={`${grid} opacity-80 text-sm`}
                 key={t.id}
               >
@@ -85,25 +87,25 @@ export default function TransactionList() {
                   <a
                     href="#"
                     className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250"
-                    onClick={() => removeTransaction(t)}
+                    onClick={() => handleRemove(t)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </a>
                 </div>
-              </TransactionItem>
+              </li>
               <hr key={`hr-${t.id}`} className="my-2" />
             </>
           ))}
-        </TransactionItemsList>
+        </ul>
 
-        <TransactionListFooter
+        <div
           className={`${grid} opacity-60 text-sm font-bold`}
         >
           <span>Total</span>
           <span>{formatCurrency(monthSelected?.calcTotalAmount() || 0)}</span>
           <span>{formatCurrency(monthSelected?.calcTotalDiscount() || 0)}</span>
           <span>{formatCurrency(monthSelected?.calcTotalSubtotal() || 0)}</span>
-        </TransactionListFooter>
+        </div>
       </div>
 
       {modalSelection == "new" && <ModalNewTransaction />}
