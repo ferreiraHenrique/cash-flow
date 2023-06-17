@@ -4,7 +4,10 @@ import NavBar from "@/components/NavBar";
 import SideMenu from "@/components/SideMenu";
 import ModalProvider from "@/contexts/ModalContext";
 import MonthsProvider from "@/contexts/MonthContext";
+import { GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
 import { styled } from "styled-components";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 
 const MainContainer = styled.main`
@@ -29,4 +32,15 @@ export default function MesesPage() {
       </MainContainer>
     </MainLayout>
   )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  if (!session) {
+    return {redirect: {destination: '/signin'}}
+  }
+
+  return {
+    props: {session}
+  }
 }

@@ -50,4 +50,11 @@ p {
 .default-button {
   border: 1px solid var(--main-color);
   color: var(--main-color);
+  transition: all ease .5s;
+}
+
+.default-button:hover {
+  background-color: var(--main-color);
+  color: white;
+  transition: all ease .5s;
 }

@@ -7,9 +7,10 @@ import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/ModalContext";
 import { ModalContextType } from "@/types/modal";
 import { MonthsContext } from "@/contexts/MonthContext";
-import { MonthsContextType } from "@/types/month";
+import { IMonth, MonthsContextType } from "@/types/month";
 import ModalUpdateMonth from "../ModalMonth/update";
 import { formatCurrency } from "@/helpers/formatCurrency";
+import Swal from "sweetalert2";
 
 
 const ItemsList = styled.ul`
@@ -25,6 +26,19 @@ export default function MonthList() {
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {months, monthSelected, selectMonth, removeMonth} = useContext(MonthsContext) as MonthsContextType
+
+  const handleRemove = async (m: IMonth) => {
+    Swal.fire({text: "Excluindo mês", showConfirmButton: false})
+    Swal.showLoading()
+
+    selectMonth(m)
+    if (!await removeMonth()) {
+      Swal.fire("Ops", "não foi possível remover o mês", "error")
+      return
+    }
+
+    Swal.close()
+  }
 
   return (
     <>
@@ -69,10 +83,7 @@ export default function MonthList() {
                   </a>
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
-                    onClick={() => {
-                      selectMonth(m)
-                      removeMonth()
-                    }}
+                    onClick={() => handleRemove(m)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </a>
