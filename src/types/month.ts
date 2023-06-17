@@ -112,7 +112,7 @@ export class Month implements IMonth {
     return this.transactions.filter(
       t => t.isCredit
     ).reduce(
-      (total: number, t: ITransaction) => total + t.amount,
+      (total: number, t: ITransaction) => total + t.calcSubtotal(),
       0
     )
   }
@@ -121,7 +121,7 @@ export class Month implements IMonth {
     return this.transactions.filter(
       t => !t.isCredit
     ).reduce(
-      (total: number, t: ITransaction) => total + t.amount,
+      (total: number, t: ITransaction) => total + t.calcSubtotal(),
       0
     )
   }
