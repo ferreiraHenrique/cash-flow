@@ -4,7 +4,6 @@ import { authOptions } from "../auth/[...nextauth]";
 import prisma from "@/lib/prisma";
 
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
   if (!session?.user?.email) {
@@ -27,27 +26,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const {id} = req.query
+  if (req.method == 'POST') {
+    const {name, amount, discount, isCredit, monthId} = JSON.parse(req.body)
 
-  if (!id || typeof id != 'string') {
-    res.status(409).json({error: 'missing id'})
-    return
-  }
-
-  if (req.method == 'DELETE') {
-    await prisma.month.delete({where: {id}})
-    res.status(200).json({})
-    return
-  }
-
-  if (req.method == 'PUT') {
-    const {name} = JSON.parse(req.body)
-
-    await prisma.month.update({
-      where: {id},
-      data: {name}
+    const transaction = await prisma.transaction.create({
+      data: {name, amount, discount, isCredit, monthId}
     })
-    res.status(200).json({})
+
+    res.status(201).json(transaction)
     return
   }
 

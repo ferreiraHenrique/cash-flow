@@ -1,7 +1,7 @@
+import prisma from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import prisma from "@/lib/prisma";
 
 
 
@@ -35,17 +35,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method == 'DELETE') {
-    await prisma.month.delete({where: {id}})
+    await prisma.transaction.delete({where: {id}})
     res.status(200).json({})
     return
   }
 
-  if (req.method == 'PUT') {
-    const {name} = JSON.parse(req.body)
+  if (req.method == "PUT") {
+    const {name, amount, discount, isCredit} = JSON.parse(req.body)
 
-    await prisma.month.update({
+    await prisma.transaction.update({
       where: {id},
-      data: {name}
+      data: {name, amount, discount, isCredit}
     })
     res.status(200).json({})
     return
