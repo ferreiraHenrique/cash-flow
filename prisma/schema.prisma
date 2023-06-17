@@ -69,9 +69,23 @@ model VerificationToken {
 }
 
 model Month {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  userId     String    @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  userId        String    @db.ObjectId
+  transactions  Transaction[]
 
   @@map("months")
+}
+
+model Transaction {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  amount     Float
+  discount   Float
+  isCredit   Boolean
+  monthId    String    @db.ObjectId
+
+  month Month @relation(fields: [monthId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
 }
