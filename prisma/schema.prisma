@@ -67,3 +67,11 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verificationtokens")
 }
+
+model Month {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  userId     String    @db.ObjectId
+
+  @@map("months")
+}
