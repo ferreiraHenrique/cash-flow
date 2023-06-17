@@ -1,17 +1,25 @@
-import { IMonth, Month, MonthsContextType } from "@/types/month";
+import { MonthsContextType } from "@/types/month";
 import Modal from "../Modal";
 import ModalMonthForm from "./form";
 import { useContext, useRef } from "react";
 import { MonthsContext } from "@/contexts/MonthContext";
+import Swal from "sweetalert2";
 
 
 export default function ModalUpdateMonth() {
   const {monthSelected, updateMonth} = useContext(MonthsContext) as MonthsContextType
 
   const formRef = useRef(null)
+  const handleFormSubmit = async (data: any) => {
+    Swal.fire({text: 'Atualizando mês', showConfirmButton: false})
+    Swal.showLoading()
 
-  const handleFormSubmit = (data: any) => {
-    updateMonth(data)
+    if (!await updateMonth(data)) {
+      Swal.fire("Ops", "não foi possível atualizar o mês", "error")
+      return
+    }
+
+    Swal.close()
   }
 
   return <Modal

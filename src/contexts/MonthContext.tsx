@@ -1,7 +1,7 @@
 import useLocalStorage from "@/hooks/localstorage";
 import { IMonth, Month, MonthsContextType } from "@/types/month";
 import { ITransaction, Transaction } from "@/types/transaction";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 
 export const MonthsContext = createContext<MonthsContextType | null>(null)
@@ -14,13 +14,25 @@ function MonthsProvider({
   const [localStorageTransactions, setLocalStorageTransactions] = useLocalStorage("transactions", [])
   const transactions: ITransaction[] = (localStorageTransactions || []).map((t: any) => new Transaction(t))
 
-  const [localStorageMonths, setLocalStorageMonths] = useLocalStorage("months", [])
-  const [months, setMonths] = useState<IMonth[]>((localStorageMonths || []).map(
-    (m: any) => (new Month({
-      ...m,
-      transactions: transactions.filter(t => t.monthId == m.id)
-    }))
-  ))
+  // const [localStorageMonths, setLocalStorageMonths] = useLocalStorage("months", [])
+  // const [months, setMonths] = useState<IMonth[]>((localStorageMonths || []).map(
+  //   (m: any) => (new Month({
+  //     ...m,
+  //     transactions: transactions.filter(t => t.monthId == m.id)
+  //   }))
+  // ))
+  const [months, setMonths] = useState<IMonth[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("/api/month")
+      if (res.status == 200) {
+        const {months} = await res.json()
+        setMonths(months.map((m: any) => (new Month(m))))
+      }
+    }
+    fetchData()
+  }, [])
 
   const [localStorageMonthSelected, setLocalStorageMonthSelected] = useLocalStorage("monthSelected", null)
   const [monthSelected, setMonthSelected] = useState<IMonth | null>(localStorageMonthSelected ? new Month(localStorageMonthSelected) : null)
@@ -30,37 +42,46 @@ function MonthsProvider({
     setLocalStorageMonthSelected(month)
   }
 
-  const addMonth = (month: IMonth) => {
-    const newMonth = new Month({...month})
-    setMonths([...months, newMonth])
-    setLocalStorageMonths([...months, newMonth])
+  const addMonth = async (month: IMonth) => {
+    if (!await month.create()) {
+      return false
+    }
+
+    setMonths([...months, month])
+    return true
   }
 
-  const removeMonth = () => {
-    if (!monthSelected) return
+  const removeMonth = async (): Promise<boolean> => {
+    if (!monthSelected) return false
 
-    const filtredTransactions = transactions.filter(t => t.monthId != monthSelected.id)
-    setLocalStorageTransactions(filtredTransactions)
+    if (!await monthSelected.delete()) {
+      return false
+    }
 
     const filteredMonths = months.filter(m => m.id != monthSelected.id)
     setMonths(filteredMonths)
-    setLocalStorageMonths(filteredMonths)
     setLocalStorageMonthSelected(null)
+
+    return true
   }
 
-  const updateMonth = (data?: any) => {
-    if(!monthSelected) return
+  const updateMonth = async (data?: any): Promise<boolean> => {
+    if(!monthSelected) return false
+
+    monthSelected.name = data.name
+    if (!await monthSelected.update()) {
+      return false
+    }
 
     const swap = months.map(m => {
       if (m.id != monthSelected.id) return m
-      if (!data) return m
-
       return new Month({...data, id: monthSelected.id})
     })
 
     setMonths(swap)
-    setLocalStorageMonths(swap)
-    selectMonth(monthSelected)
+    setLocalStorageMonthSelected(null)
+
+    return true
   }
 
   const addTransaction = (transaction: ITransaction) => {

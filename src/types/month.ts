@@ -5,6 +5,9 @@ export interface IMonth {
   id: string
   name: string
   transactions: ITransaction[]
+  create: () => Promise<boolean>
+  delete: () => Promise<boolean>
+  update: () => Promise<boolean>
   calcTotalAmount: () => number
   calcTotalDiscount: () => number
   calcTotalSubtotal: () => number
@@ -34,6 +37,54 @@ export class Month implements IMonth {
       this.transactions = data.transactions.map((t:any) => new Transaction(t))
     } else {
       this.transactions = []
+    }
+  }
+
+  async create(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/month", {
+        method: "POST",
+        body: JSON.stringify({name: this.name})
+      })
+      if (res.status != 200) {
+        return false
+      }
+      const json = await res.json()
+      this.id = json.id
+
+      return true
+    } catch(err) {
+      return false
+    }
+  }
+
+  async delete(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/month/${this.id}`, {
+        method: 'DELETE'
+      })
+      if (res.status != 200) {
+        return false
+      }
+      return true
+    } catch(err) {
+      return false
+    }
+  }
+
+  async update(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/month/${this.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({name: this.name})
+      })
+      if (res.status != 200) {
+        return false
+      }
+
+      return true
+    } catch(err) {
+      return false
     }
   }
 
@@ -80,9 +131,9 @@ export type MonthsContextType = {
   months: IMonth[]
   monthSelected: IMonth | null
   selectMonth: (month: IMonth) => void
-  addMonth: (month: IMonth) => void
-  removeMonth: () => void
-  updateMonth: (data?: any) => void
+  addMonth: (month: IMonth) => Promise<boolean>
+  removeMonth: () => Promise<boolean>
+  updateMonth: (data?: any) => Promise<boolean>
   addTransaction: (transaction: ITransaction) => void
   removeTransaction: (transaction: ITransaction) => void
   updateTransaction: (transaction: ITransaction) => void
