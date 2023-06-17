@@ -134,7 +134,7 @@ export type MonthsContextType = {
   addMonth: (month: IMonth) => Promise<boolean>
   removeMonth: () => Promise<boolean>
   updateMonth: (data?: any) => Promise<boolean>
-  addTransaction: (transaction: ITransaction) => void
-  removeTransaction: (transaction: ITransaction) => void
-  updateTransaction: (transaction: ITransaction) => void
+  addTransaction: (transaction: ITransaction) => Promise<boolean>
+  removeTransaction: (transaction: ITransaction) => Promise<boolean>
+  updateTransaction: (transaction: ITransaction) => Promise<boolean>
 }

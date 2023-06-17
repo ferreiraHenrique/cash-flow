@@ -3,7 +3,6 @@
 import MainLayout from '@/components/MainLayout';
 import TransactionList from '@/components/TransactionList';
 import ModalProvider from '@/contexts/ModalContext';
-import TransactionsProvider from '@/contexts/TransactionsContext';
 import MonthsProvider from '@/contexts/MonthContext';
 import MonthListResumeCard from '@/components/MonthListResumeCard';
 import { GetServerSidePropsContext } from 'next';
@@ -20,11 +19,9 @@ export default function DashboardPage() {
             <MonthListResumeCard />
           </div>
 
-          <TransactionsProvider>
-            <ModalProvider>
-              <TransactionList />
-            </ModalProvider>
-          </TransactionsProvider>
+          <ModalProvider>
+            <TransactionList />
+          </ModalProvider>
         </div>
       </MonthsProvider>
     </MainLayout>
