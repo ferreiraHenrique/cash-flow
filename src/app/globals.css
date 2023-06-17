@@ -58,3 +58,11 @@ p {
   color: white;
   transition: all ease .5s;
 }
+
+aside ul li.selected {
+  background-color: rgb(94 114 228 / 0.13);
+}
+
+aside ul li.selected a {
+  font-weight: bold;
+}
