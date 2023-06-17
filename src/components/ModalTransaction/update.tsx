@@ -1,13 +1,13 @@
 'use client'
 
-import { ITransaction, Transaction, TransactionsContextType } from "@/types/transaction";
+import { ITransaction, Transaction } from "@/types/transaction";
 import Modal from "../Modal";
 import { useContext, useRef } from "react";
 import { formatCurrency } from "@/helpers/formatCurrency";
-import { TransactionsContext } from "@/contexts/TransactionsContext";
 import ModalTransactionForm from "./form";
 import { MonthsContext } from "@/contexts/MonthContext";
 import { MonthsContextType } from "@/types/month";
+import Swal from "sweetalert2";
 
 
 interface ModalUpdateTransactionProps {
@@ -19,12 +19,21 @@ export default function ModalUpdateTransaction(props: ModalUpdateTransactionProp
 
   const formRef = useRef(null)
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = async (data: any) => {
+    Swal.fire({text: 'Atualizando transação', showConfirmButton: false})
+    Swal.showLoading()
+
     const transaction = new Transaction({
       id: props.transaction.id,
       ...data
     })
-    updateTransaction(transaction)
+
+    if (!await updateTransaction(transaction)) {
+      Swal.fire("Ops", "não foi possível atualizar a transação", "error")
+      return
+    }
+
+    Swal.close()
   }
 
   return <Modal

@@ -26,7 +26,7 @@ export default function ModalTransactionForm(props: ModalTransactionFormProps) {
     <Form
       ref={props.formRef}
       onSubmit={props.handleFormSubmit}
-      initialData={props.initialData}
+      initialData={props.initialData || {isCredit: true}}
     >
       <div className="mt-2 w-full">
         <div className="mb-4">
@@ -67,6 +67,7 @@ export default function ModalTransactionForm(props: ModalTransactionFormProps) {
         <FormInput
           name="monthId"
           defaultValue={monthSelected?.id}
+          customClasses="hidden"
         />
       </div>
     </Form>

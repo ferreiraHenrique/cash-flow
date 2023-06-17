@@ -9,6 +9,9 @@ export interface ITransaction {
   discount: number
   isCredit: boolean
   monthId: string
+  create: () => Promise<boolean>
+  delete: () => Promise<boolean>
+  update: () => Promise<boolean>
   displayName: () => string
   calcSubtotal: () => number
   displayAmount: () => string
@@ -50,6 +53,72 @@ export class Transaction implements ITransaction {
     }
 
     this.monthId = data?.monthId
+  }
+
+  async create(): Promise<boolean> {
+    console.log('to create', JSON.stringify({
+      name: this.name,
+      amount: this.amount,
+      discount: this.discount,
+      isCredit: this.isCredit,
+      monthId: this.monthId
+    }))
+    try {
+      const res = await fetch("/api/transaction", {
+        method: "POST",
+        body: JSON.stringify({
+          name: this.name,
+          amount: this.amount,
+          discount: this.discount,
+          isCredit: this.isCredit,
+          monthId: this.monthId
+        })
+      })
+      if (res.status != 201) {
+        return false
+      }
+      const {id} = await res.json()
+      this.id = id
+
+      return true
+    } catch(err) {
+      return false
+    }
+  }
+
+  async delete(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/transaction/${this.id}`, {
+        method: 'DELETE'
+      })
+      if (res.status != 200) {
+        return false
+      }
+      return true
+    } catch(err) {
+      return false
+    }
+  }
+
+  async update(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/transaction/${this.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          name: this.name,
+          amount: this.amount,
+          discount: this.discount,
+          isCredit: this.isCredit,
+        })
+      })
+      if (res.status != 200) {
+        return false
+      }
+
+      return true
+    } catch(err) {
+      return false
+    }
   }
 
   public displayName(): string {

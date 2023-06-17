@@ -5,6 +5,8 @@ import '@/app/css/nucleo-icons.css'
 import {Open_Sans} from 'next/font/google'
 import { useSession } from 'next-auth/react'
 import AccessDenied from '../AccessDenied'
+import SideMenu from '../SideMenu'
+import NavBar from '../NavBar'
 
 const open_sans = Open_Sans({subsets: ['latin'], weight: ["300", "400", "500", "600", "700", "800"]})
 
@@ -32,7 +34,12 @@ export default function MainLayout({
       <div
         className={classes}
       >
-        {children}
+        <SideMenu />
+
+        <main className='relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl ml-72'>
+          <NavBar />
+          {children}
+        </main>
       </div>
     </>
   )
