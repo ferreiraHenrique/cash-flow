@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+
 import Button from "../Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -13,12 +13,6 @@ import { formatCurrency } from "@/helpers/formatCurrency";
 import Swal from "sweetalert2";
 
 
-const ItemsList = styled.ul`
-  max-height: 200px;
-  overflow-y: scroll;
-`
-
-
 export default function MonthList() {
   const grid = "grid grid-cols-5 gap-4"
 
@@ -31,8 +25,7 @@ export default function MonthList() {
     Swal.fire({text: "Excluindo mês", showConfirmButton: false})
     Swal.showLoading()
 
-    selectMonth(m)
-    if (!await removeMonth()) {
+    if (!await removeMonth(m)) {
       Swal.fire("Ops", "não foi possível remover o mês", "error")
       return
     }
@@ -62,7 +55,7 @@ export default function MonthList() {
         </div>
         <hr className="mt-4 mb-2" />
 
-        <ItemsList>
+        <div className="max-h-52 overflow-y-scroll">
           {months.map(m => (
             <>
               <li className={`${grid} opacity-80 text-sm`}>
@@ -92,7 +85,7 @@ export default function MonthList() {
               <hr className="my-2" />
             </>
           ))}
-        </ItemsList>
+        </div>
       </div>
 
       {modalSelection == 'new' && <ModalNewMonth />}

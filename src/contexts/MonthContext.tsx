@@ -39,14 +39,12 @@ function MonthsProvider({
     return true
   }
 
-  const removeMonth = async (): Promise<boolean> => {
-    if (!monthSelected) return false
-
-    if (!await monthSelected.delete()) {
+  const removeMonth = async (month: IMonth): Promise<boolean> => {
+    if (!await month.delete()) {
       return false
     }
 
-    const filteredMonths = months.filter(m => m.id != monthSelected.id)
+    const filteredMonths = months.filter(m => m.id != month.id)
     setMonths(filteredMonths)
 
     return true
