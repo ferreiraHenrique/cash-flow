@@ -55,9 +55,9 @@ export default function TransactionList() {
           className={`${grid} opacity-60 text-sm`}
         >
           <span>Nome</span>
-          <span>Valor</span>
-          <span>Desconto</span>
-          <span>Subtotal</span>
+          <span className='text-right'>Valor</span>
+          <span className='text-right'>Desconto</span>
+          <span className='text-right'>Subtotal</span>
         </div>
         <hr className="mt-4 mb-2" />
 
@@ -69,9 +69,9 @@ export default function TransactionList() {
                 key={t.id}
               >
                 <span>{t.displayName()}</span>
-                <span>{t.displayAmount()}</span>
-                <span>{formatCurrency(t.discount)}</span>
-                <span>{t.displaySubtotal()}</span>
+                <span className='text-right'>{t.displayAmount()}</span>
+                <span className='text-right'>{formatCurrency(t.discount)}</span>
+                <span className='text-right'>{t.displaySubtotal()}</span>
                 <div className="flex justify-center gap-4">
                   <a
                     href="#"
@@ -102,9 +102,9 @@ export default function TransactionList() {
           className={`${grid} opacity-60 text-sm font-bold`}
         >
           <span>Total</span>
-          <span>{formatCurrency(monthSelected?.calcTotalAmount() || 0)}</span>
-          <span>{formatCurrency(monthSelected?.calcTotalDiscount() || 0)}</span>
-          <span>{formatCurrency(monthSelected?.calcTotalSubtotal() || 0)}</span>
+          <span className='text-right'>{formatCurrency(monthSelected?.calcTotalAmount() || 0)}</span>
+          <span className='text-right'>{formatCurrency(monthSelected?.calcTotalDiscount() || 0)}</span>
+          <span className='text-right'>{formatCurrency(monthSelected?.calcTotalSubtotal() || 0)}</span>
         </div>
       </div>
 

@@ -15,7 +15,7 @@ export default function SideMenu() {
     >
       <a className="h-19">
         <div className="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700">
-          <span className="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Cash Flow</span>
+          <span className="ml-1 font-bold transition-all duration-200 ease-nav-brand">Cash Flow</span>
         </div>
         <hr className="h-px mb-2 mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent bg-gradient-to-r from-transparent via-white to-transparent" />
       </a>

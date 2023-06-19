@@ -49,9 +49,9 @@ export default function MonthList() {
 
         <div className={`${grid} opacity-60 text-sm`}>
           <span>Nome</span>
-          <span>Crédito</span>
-          <span>Débito</span>
-          <span>Saldo</span>
+          <span className="text-right">Crédito</span>
+          <span className="text-right">Débito</span>
+          <span className="text-right">Saldo</span>
         </div>
         <hr className="mt-4 mb-2" />
 
@@ -60,9 +60,9 @@ export default function MonthList() {
             <>
               <li className={`${grid} opacity-80 text-sm`}>
                 <span>{m.name}</span>
-                <span>{formatCurrency(m.calcTotalCredit())}</span>
-                <span>{formatCurrency(m.calcTotalDebit())}</span>
-                <span>{formatCurrency(m.calcTotalCredit() - m.calcTotalDebit())}</span>
+                <span className="text-right">{formatCurrency(m.calcTotalCredit())}</span>
+                <span className="text-right">{formatCurrency(m.calcTotalDebit())}</span>
+                <span className="text-right">{formatCurrency(m.calcTotalCredit() - m.calcTotalDebit())}</span>
                 <div className="flex justify-center gap-4">
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
