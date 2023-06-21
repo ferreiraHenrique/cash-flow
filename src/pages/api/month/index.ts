@@ -7,7 +7,7 @@ import prisma from "@/lib/prisma";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
   if (!session?.user?.email) {
-    res.status(404).send({
+    res.status(404).json({
       error: 'session not found'
     })
     return
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   })
 
   if (!user) {
-    res.status(404).send({
+    res.status(404).json({
       error: 'user not found'
     })
     return
@@ -33,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     res.status(200).json({months})
+    return
   }
 
   if (req.method == 'POST') {
