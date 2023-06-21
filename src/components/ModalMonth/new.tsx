@@ -4,12 +4,13 @@ import ModalMonthForm from "./form";
 import { MonthsContext } from "@/contexts/MonthContext";
 import { Month, MonthsContextType } from "@/types/month";
 import Swal from "sweetalert2";
+import { FormHandles } from "@unform/core";
 
 
 export default function ModalNewMonth() {
   const {addMonth} = useContext(MonthsContext) as MonthsContextType
 
-  const formRef = useRef(null)
+  const formRef = useRef<FormHandles | null>(null)
   const handleFormSubmit = async (data: any) => {
     Swal.fire({text: 'Criando mês', showConfirmButton: false})
     Swal.showLoading()
@@ -26,8 +27,8 @@ export default function ModalNewMonth() {
   return <Modal
     title="Criar novo mês"
     confirmButtonText="Adicionar mês"
-    onConfirm={() => formRef.current.submitForm()}
-    children={
+    onConfirm={() => formRef?.current?.submitForm()}
+    content={
       <ModalMonthForm
         formRef={formRef}
         handleFormSubmit={handleFormSubmit}

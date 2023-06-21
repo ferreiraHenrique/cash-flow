@@ -11,6 +11,7 @@ export default function MonthListResumeCard() {
     <>
       {months.map(m => (
         <MonthResumeCard
+          key={m.id}
           month={m}
           onClick={selectMonth}
         />

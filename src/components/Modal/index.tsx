@@ -22,7 +22,7 @@ interface ModalProps {
   cancelButtonText?: string
   confirmButtonText: string
   isDanger?: string
-  children?: React.ReactNode
+  content?: React.ReactNode
   showIcon?: boolean
   onConfirm: () => void
 }
@@ -70,7 +70,7 @@ export default function Modal(props:ModalProps){
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                         {props.title}
                       </Dialog.Title>
-                      {props.children}
+                      {props.content}
                     </div>
                   </div>
                 </div>
