@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react"
 interface FormInputProps extends React.HTMLAttributes<HTMLInputElement> {
   name: string
   customClasses?: string
+  dataType?: string
 }
 
-export default function FormInput({name, customClasses, ...rest}: FormInputProps) {
+export default function FormInput({name, customClasses, dataType, ...rest}: FormInputProps) {
   const inputRef = useRef(null)
   const { fieldName, defaultValue, registerField } = useField(name)
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function FormInput({name, customClasses, ...rest}: FormInputProps
     name={name}
     ref={inputRef}
     defaultValue={defaultValue}
+    type={dataType || 'text'}
     {...rest}
     className={`placeholder:text-gray-500 text-sm rounded border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 focus:shadow-primary-outline w-full ${customClasses}`}
   />

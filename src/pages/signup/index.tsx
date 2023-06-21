@@ -3,6 +3,7 @@ import FormInput from "@/components/FormInput";
 import MainLayout from "@/components/MainLayout";
 import useLocalStorage from "@/hooks/localstorage";
 import { RegisterUser } from "@/types/user";
+import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
 import { useRouter } from "next/router";
 import { useRef } from "react";
@@ -11,7 +12,7 @@ import { useRef } from "react";
 export default function SigninPage() {
   const [localStorageUsers, setLocalStorageUsers] = useLocalStorage("users", [])
 
-  const formRef = useRef(null)
+  const formRef = useRef<FormHandles | null>(null)
   const router = useRouter()
 
   const submit = (data: any) => {
@@ -42,8 +43,8 @@ export default function SigninPage() {
           <div className="flex-auto p-6">
             <Form ref={formRef} onSubmit={submit}>
               <div className="mb-4"><FormInput name="name" placeholder="Nome" /></div>
-              <div className="mb-4"><FormInput name="email" placeholder="Email" type="email" /></div>
-              <div className="mb-4"><FormInput name="password" placeholder="Senha" type="password" /></div>
+              <div className="mb-4"><FormInput name="email" placeholder="Email" dataType="email" /></div>
+              <div className="mb-4"><FormInput name="password" placeholder="Senha" dataType="password" /></div>
 
               <Button
                 text="Registrar"

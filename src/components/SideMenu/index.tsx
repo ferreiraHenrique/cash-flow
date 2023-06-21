@@ -11,7 +11,6 @@ export default function SideMenu() {
   return (
     <aside
       className="fixed w-64 p-2 inset-y-0 flex-wrap items-center justify-between block my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
-      aria-expanded="false"
     >
       <a className="h-19">
         <div className="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700">
