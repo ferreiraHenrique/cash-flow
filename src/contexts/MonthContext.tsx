@@ -12,6 +12,7 @@ function MonthsProvider({
   children: React.ReactNode
 }) {
   const [months, setMonths] = useState<IMonth[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +20,7 @@ function MonthsProvider({
       if (res.status == 200) {
         const {months} = await res.json()
         setMonths(months.map((m: any) => (new Month(m))))
+        setIsLoading(false)
       }
     }
     fetchData()
@@ -118,6 +120,7 @@ function MonthsProvider({
     <MonthsContext.Provider value={{
       months,
       monthSelected,
+      isLoading,
       selectMonth,
       addMonth,
       removeMonth,
