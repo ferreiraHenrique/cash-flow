@@ -27,7 +27,7 @@ export default function MainLayout({
     )
   }
 
-  const classes = `${open_sans.className}`
+  const classes = `${open_sans.className} overflow-hidden`
 
   return (
     <>
