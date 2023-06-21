@@ -22,7 +22,7 @@ export default function MonthResumeCard(props: MonthResumeCardProps) {
     <div
       onClick={() => props.onClick? props.onClick(props.month) : ''}
     >
-      <div className={`bg-white w-full max-w-full py-4 px-4 mb-6 rounded-xl shadow-xl cursor-pointer ${selectionClasses}`}>
+      <div className={`h-36 bg-white w-full max-w-full py-4 px-4 mb-6 rounded-xl shadow-xl cursor-pointer ${selectionClasses}`}>
         <h5 className="mb-0 font-sans text-sm font-semibold leading-normal uppercase opacity-40">
           {props.month.name}
         </h5>

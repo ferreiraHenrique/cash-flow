@@ -130,6 +130,7 @@ export class Month implements IMonth {
 export type MonthsContextType = {
   months: IMonth[]
   monthSelected: IMonth | null
+  isLoading: boolean
   selectMonth: (month: IMonth) => void
   addMonth: (month: IMonth) => Promise<boolean>
   removeMonth: (month: IMonth) => Promise<boolean>
