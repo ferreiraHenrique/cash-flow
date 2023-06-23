@@ -8,22 +8,25 @@ import MonthListResumeCard from '@/components/MonthListResumeCard';
 import { GetServerSidePropsContext } from 'next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
+import YearsProvider from '@/contexts/YearContext';
 
 
 export default function DashboardPage() {
   return (
     <MainLayout>
-      <MonthsProvider>
-        <div className='w-full px-6 py-6 mx-2'>
-          <div className='grid grid-cols-4 gap-6'>
-            <MonthListResumeCard />
-          </div>
+      <YearsProvider>
+        <MonthsProvider notFetchAll={true}>
+          <div className='w-full p-6 mx-2'>
+            <div className='grid grid-cols-4 gap-6'>
+                <MonthListResumeCard />
+            </div>
 
-          <ModalProvider>
-            <TransactionList />
-          </ModalProvider>
-        </div>
-      </MonthsProvider>
+            <ModalProvider>
+              <TransactionList />
+            </ModalProvider>
+          </div>
+        </MonthsProvider>
+      </YearsProvider>
     </MainLayout>
   )
 }

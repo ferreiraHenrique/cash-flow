@@ -5,7 +5,6 @@ import { IMonth, MonthsContextType } from "@/types/month";
 import MonthResumeCardSkeleton from "../MonthResumeCard/skeleton";
 import { YearsContext } from "@/contexts/YearContext";
 import { YearsContextType } from "@/types/year";
-import { IModal } from "@/types/modal";
 
 
 export default function MonthListResumeCard() {
