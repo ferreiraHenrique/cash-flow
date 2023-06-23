@@ -41,6 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const years = await prisma.year.findMany({
       where: {userId: user.id},
+      include: {months: {include: {transactions: true}}}
     })
 
     res.status(200).json({years})
