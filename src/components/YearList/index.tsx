@@ -43,7 +43,7 @@ export default function YearList() {
                 key={`year-li-${y.id}`}
                 className={`${grid} opacity-80 text-sm`}
               >
-                <span>2023</span>
+                <span>{y.name}</span>
                 <div className="flex justify-center gap-4">
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
