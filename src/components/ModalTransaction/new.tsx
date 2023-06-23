@@ -6,10 +6,13 @@ import { MonthsContext } from "@/contexts/MonthContext";
 import { MonthsContextType } from "@/types/month";
 import Swal from "sweetalert2";
 import { FormHandles } from "@unform/core";
+import { YearsContext } from "@/contexts/YearContext";
+import { YearsContextType } from "@/types/year";
 
 
 export default function ModalNewTransaction() {
   const {addTransaction} = useContext(MonthsContext) as MonthsContextType
+  const {loadCurrentYear} = useContext(YearsContext) as YearsContextType
 
   const formRef = useRef<FormHandles | null>(null)
   const handleFormSubmit = async (data: any) => {
@@ -21,6 +24,8 @@ export default function ModalNewTransaction() {
       Swal.fire("Ops", "não foi possível criar a transação", "error")
       return
     }
+
+    await loadCurrentYear(false)
 
     Swal.close()
   }

@@ -68,12 +68,28 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-model Month {
+model Year {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
+  name          String    @unique
+  months        Month[]
+  startAt       DateTime
   userId        String    @db.ObjectId
-  transactions  Transaction[]
 
+  @@unique([name, userId])
+  @@map("years")
+}
+
+model Month {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  userId        String        @db.ObjectId
+  startAt       DateTime
+  transactions  Transaction[]
+  yearId        String        @db.ObjectId
+
+  year          Year          @relation(fields: [yearId], references: [id], onDelete: Cascade)
+
+  @@unique([yearId, name])
   @@map("months")
 }
 
@@ -85,7 +101,7 @@ model Transaction {
   isCredit   Boolean
   monthId    String    @db.ObjectId
 
-  month Month @relation(fields: [monthId], references: [id], onDelete: Cascade)
+  month      Month     @relation(fields: [monthId], references: [id], onDelete: Cascade)
 
   @@map("transactions")
 }

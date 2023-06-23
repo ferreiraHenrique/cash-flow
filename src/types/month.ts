@@ -5,6 +5,7 @@ export interface IMonth {
   id: string
   name: string
   transactions: ITransaction[]
+  startAt: Date
   create: () => Promise<boolean>
   delete: () => Promise<boolean>
   update: () => Promise<boolean>
@@ -20,6 +21,7 @@ export class Month implements IMonth {
   id: string
   name: string
   transactions: ITransaction[];
+  startAt: Date;
 
   constructor(data?: any) {
     if (data?.id) {
@@ -37,6 +39,11 @@ export class Month implements IMonth {
       this.transactions = data.transactions.map((t:any) => new Transaction(t))
     } else {
       this.transactions = []
+    }
+
+    this.startAt = new Date()
+    if (data?.startAt) {
+      this.startAt = new Date(data.startAt)
     }
   }
 

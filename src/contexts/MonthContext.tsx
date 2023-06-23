@@ -1,21 +1,28 @@
 
 import { IMonth, Month, MonthsContextType } from "@/types/month";
+import { getCurrentPage } from "@/types/page";
 import { ITransaction } from "@/types/transaction";
+import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 
 
 export const MonthsContext = createContext<MonthsContextType | null>(null)
 
 function MonthsProvider({
+  notFetchAll,
   children
 }: {
+  notFetchAll?: boolean
   children: React.ReactNode
 }) {
   const [months, setMonths] = useState<IMonth[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  const router = useRouter()
+  const currentPage = getCurrentPage(router)
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAll = async () => {
       const res = await fetch("/api/month")
       if (res.status == 200) {
         const {months} = await res.json()
@@ -23,13 +30,44 @@ function MonthsProvider({
         setIsLoading(false)
       }
     }
-    fetchData()
+
+    const fetchByYear = async (yearId: string) => {
+      const res = await fetch(`/api/year/${yearId}`)
+      if (res.status == 200) {
+        const {months} = (await res.json()).year
+        setMonths(months.map((m: any) => (new Month(m))))
+        setIsLoading(false)
+      }
+    }
+
+    if (
+      currentPage.urlVariants.includes('/periodos/[id]') &&
+      typeof router.query.id == 'string'
+    ) {
+      fetchByYear(router.query.id)
+    } else {
+      if (!notFetchAll) {
+        fetchAll()
+      }
+    }
   }, [])
 
   const [monthSelected, setMonthSelected] = useState<IMonth | null>(null)
 
-  const selectMonth = (month: IMonth) => {
-    setMonthSelected(month)
+  const selectMonth = async (month: IMonth): Promise<boolean> => {
+    const fetchData = async (): Promise<boolean> => {
+      const res = await fetch(`/api/month/${month.id}`)
+      if (res.status == 200) {
+        const {month: data} = await res.json()
+        month = new Month(data)
+        setMonthSelected(month)
+        return true
+      }
+
+      return false
+    }
+
+    return await fetchData()
   }
 
   const addMonth = async (month: IMonth) => {

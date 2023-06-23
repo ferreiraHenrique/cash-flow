@@ -1,12 +1,13 @@
 'use client'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { pages } from '@/types/page';
+import { getCurrentPage, pages } from '@/types/page';
 import { useRouter } from 'next/router';
 
 
 export default function SideMenu() {
   const router = useRouter()
+  const currentPage = getCurrentPage(router)
 
   return (
     <aside
@@ -22,7 +23,7 @@ export default function SideMenu() {
       <div className="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
         <ul className="flex flex-col pl-0 mb-0">
           {pages.map((p, i) => {
-            const isSelected = router.pathname == p.url
+            const isSelected = currentPage.name == p.name
 
             return <li key={`sidemenu-item-${i}`} className={`mt-0.5 w-full rounded-2xl ${isSelected && 'selected'}`}>
               <a

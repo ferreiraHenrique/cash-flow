@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import prisma from "@/lib/prisma";
+
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -25,7 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     return
   }
-  const {id: userId} = user
 
   const {id} = req.query
 
@@ -34,29 +33,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  if (req.method == 'DELETE') {
-    await prisma.month.delete({where: {id}})
-    res.status(200).json({})
-    return
-  }
-
-  if (req.method == 'PUT') {
-    const {name} = JSON.parse(req.body)
-
-    await prisma.month.update({
-      where: {id},
-      data: {name}
-    })
-    res.status(200).json({})
-    return
-  }
-
   if (req.method == 'GET') {
-    const month = await prisma.month.findFirst({
-      where: {id, userId},
-      include: {transactions: true}
+    const year = await prisma.year.findFirst({
+      where: {id, userId: user.id},
+      include: {months: {include: {transactions: true}}}
     })
-    res.status(200).json({month})
+
+    res.status(200).json({year})
     return
   }
 
