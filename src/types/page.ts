@@ -5,15 +5,16 @@ export interface IPage {
   name: string
   label: string
   url: string
+  urlVariants: string[]
   icon: IconDefinition
 }
 
 export const pages: IPage[] = [
-  {name: 'dashboard', label: 'Dashboard', url: '/dashboard', icon: faDashboard},
-  {name: 'months', label: 'Meses', url: '/meses', icon: faCalendar},
+  {name: 'dashboard', label: 'Dashboard', url: '/dashboard', urlVariants: ['/dashboard'], icon: faDashboard},
+  {name: 'periods', label: 'Períodos', url: '/periodos', urlVariants: ['/periodos', '/periodos/[id]', '/periodos/meses/[...slug]'], icon: faCalendar},
 ]
 
 export function getCurrentPage(router: NextRouter): IPage {
-  const current = pages.filter(p => p.url == router.pathname)
+  const current = pages.filter(p => p.urlVariants.includes(router.route))
   return current[0]
 }
