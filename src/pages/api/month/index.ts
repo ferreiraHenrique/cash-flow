@@ -36,19 +36,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  if (req.method == 'POST') {
-    const {name} = JSON.parse(req.body)
-
-    const month = await prisma.month.create({
-      data: {
-        name,
-        userId: user.id
-      }
-    })
-
-    res.status(200).json(month)
-    return
-  }
-
   res.status(404).json({})
 }
