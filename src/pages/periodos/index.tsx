@@ -10,7 +10,7 @@ import YearsProvider from "@/contexts/YearContext";
 export default function PeriodosPage() {
   return (
     <MainLayout>
-      <div className="w-full px-6 py-6 mx-2">
+      <div className="w-full p-6">
         <YearsProvider>
           <ModalProvider>
             <YearList />
