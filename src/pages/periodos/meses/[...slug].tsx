@@ -31,12 +31,8 @@ export function ResumeCard(props: ResumeCardProps) {
   const index = currentYear.months.findIndex(m => m.id == props.monthId)
   const filterMonths = (m: IMonth, i: number) => (i >= index-1 && i <= index+2)
 
-  useEffect(() => {
-    if (!years.length) return
-
-    const currentMonth = currentYear.months.filter((m) => m.id == props.monthId)
-    selectMonth(currentMonth[0])
-  }, [isLoading])
+  const currentMonth = currentYear.months.filter((m) => m.id == props.monthId)
+  selectMonth(currentMonth[0])
 
   return (
     <>
