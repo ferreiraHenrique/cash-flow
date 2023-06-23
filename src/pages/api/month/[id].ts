@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     return
   }
+  const {id: userId} = user
 
   const {id} = req.query
 
@@ -47,6 +48,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {name}
     })
     res.status(200).json({})
+    return
+  }
+
+  if (req.method == 'GET') {
+    const month = await prisma.month.findFirst({
+      where: {id, userId},
+      include: {transactions: true}
+    })
+    res.status(200).json({month})
     return
   }
 
