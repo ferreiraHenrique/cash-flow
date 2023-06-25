@@ -114,3 +114,12 @@ model Receipt {
 
   @@map("receipts")
 }
+
+model Expenses {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  baseAmount Float
+  userId     String    @db.ObjectId
+
+  @@map("expenses")
+}
