@@ -6,10 +6,10 @@ import Button from "../Button"
 import { useContext, useState} from "react"
 import { ModalContext } from "@/contexts/ModalContext"
 import { ModalContextType } from "@/types/modal"
-import { ITransaction } from "@/types/transaction"
+import { IMonthTransaction } from "@/types/monthTransaction"
 import {formatCurrency} from "@/helpers/formatCurrency"
-import ModalNewTransaction from "../ModalTransaction/new"
-import ModalUpdateTransaction from "../ModalTransaction/update"
+import ModalNewMonthTransaction from "../ModalMonthTransaction/new"
+import ModalUpdateMonthTransaction from "../ModalMonthTransaction/update"
 import { MonthsContext } from "@/contexts/MonthContext"
 import { MonthsContextType } from "@/types/month"
 import Swal from 'sweetalert2'
@@ -19,12 +19,12 @@ export default function TransactionList() {
   const grid = "grid grid-cols-5 gap-4"
 
   const [modalSelection, setModalSelection] = useState('')
-  const [transactionSelected, setTransactionSelected] = useState<ITransaction | null>(null)
+  const [transactionSelected, setTransactionSelected] = useState<IMonthTransaction | null>(null)
 
   const {toggleModal} = useContext(ModalContext) as ModalContextType
   const {monthSelected, removeTransaction} = useContext(MonthsContext) as MonthsContextType
 
-  const handleRemove = async (t: ITransaction) => {
+  const handleRemove = async (t: IMonthTransaction) => {
     Swal.fire({text: "Excluindo transação", showConfirmButton: false})
     Swal.showLoading()
 
@@ -108,8 +108,8 @@ export default function TransactionList() {
         </div>
       </div>
 
-      {modalSelection == "new" && <ModalNewTransaction />}
-      {modalSelection == "update" && transactionSelected && <ModalUpdateTransaction transaction={transactionSelected} />}
+      {modalSelection == "new" && <ModalNewMonthTransaction />}
+      {modalSelection == "update" && transactionSelected && <ModalUpdateMonthTransaction transaction={transactionSelected} />}
     </>
   )
 }

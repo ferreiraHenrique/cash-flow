@@ -2,7 +2,7 @@ import { formatCurrency, unformatCurrency } from "@/helpers/formatCurrency"
 import { v4 as uuidv4 } from 'uuid';
 
 
-export interface ITransaction {
+export interface IMonthTransaction {
   id: string
   name: string
   amount: number
@@ -18,7 +18,7 @@ export interface ITransaction {
   displaySubtotal: () => string
 }
 
-export class Transaction implements ITransaction {
+export class MonthTransaction implements IMonthTransaction {
   id: string
   name: string
   amount: number
@@ -64,7 +64,7 @@ export class Transaction implements ITransaction {
       monthId: this.monthId
     }))
     try {
-      const res = await fetch("/api/transaction", {
+      const res = await fetch("/api/month-transaction", {
         method: "POST",
         body: JSON.stringify({
           name: this.name,
@@ -88,7 +88,7 @@ export class Transaction implements ITransaction {
 
   async delete(): Promise<boolean> {
     try {
-      const res = await fetch(`/api/transaction/${this.id}`, {
+      const res = await fetch(`/api/month-transaction/${this.id}`, {
         method: 'DELETE'
       })
       if (res.status != 200) {
@@ -102,7 +102,7 @@ export class Transaction implements ITransaction {
 
   async update(): Promise<boolean> {
     try {
-      const res = await fetch(`/api/transaction/${this.id}`, {
+      const res = await fetch(`/api/month-transaction/${this.id}`, {
         method: 'PUT',
         body: JSON.stringify({
           name: this.name,
@@ -152,8 +152,8 @@ export class Transaction implements ITransaction {
 }
 
 export type TransactionsContextType = {
-  transactions: ITransaction[]
-  addTransaction: (transaction: ITransaction) => void
-  removeTransaction: (transaction: ITransaction) => void
-  updateTransaction: (transaction: ITransaction) => void
+  transactions: IMonthTransaction[]
+  addTransaction: (transaction: IMonthTransaction) => void
+  removeTransaction: (transaction: IMonthTransaction) => void
+  updateTransaction: (transaction: IMonthTransaction) => void
 }

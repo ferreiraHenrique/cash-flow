@@ -8,13 +8,13 @@ import { MonthsContextType } from "@/types/month";
 import { MonthsContext } from "@/contexts/MonthContext";
 import { useContext } from "react";
 
-interface ModalTransactionFormProps {
+interface ModalMonthTransactionFormProps {
   formRef: any
   handleFormSubmit: (data: any) => void
   initialData?: any
 }
 
-export default function ModalTransactionForm(props: ModalTransactionFormProps) {
+export default function ModalMonthTransactionForm(props: ModalMonthTransactionFormProps) {
   const {monthSelected} = useContext(MonthsContext) as MonthsContextType
 
   const onInputAmount = (event: any) => {

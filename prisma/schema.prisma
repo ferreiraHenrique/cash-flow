@@ -84,7 +84,7 @@ model Month {
   name          String
   userId        String        @db.ObjectId
   startAt       DateTime
-  transactions  Transaction[]
+  transactions  MonthTransaction[]
   yearId        String        @db.ObjectId
 
   year          Year          @relation(fields: [yearId], references: [id], onDelete: Cascade)
@@ -93,7 +93,7 @@ model Month {
   @@map("months")
 }
 
-model Transaction {
+model MonthTransaction {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   amount     Float
@@ -103,7 +103,7 @@ model Transaction {
 
   month      Month     @relation(fields: [monthId], references: [id], onDelete: Cascade)
 
-  @@map("transactions")
+  @@map("monthTransactions")
 }
 
 model Receipt {

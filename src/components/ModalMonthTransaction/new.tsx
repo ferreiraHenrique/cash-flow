@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import Modal from "../Modal";
-import { Transaction } from "@/types/transaction";
-import ModalTransactionForm from "./form";
+import { MonthTransaction } from "@/types/monthTransaction";
+import ModalMonthTransactionForm from "./form";
 import { MonthsContext } from "@/contexts/MonthContext";
 import { MonthsContextType } from "@/types/month";
 import Swal from "sweetalert2";
@@ -10,7 +10,7 @@ import { YearsContext } from "@/contexts/YearContext";
 import { YearsContextType } from "@/types/year";
 
 
-export default function ModalNewTransaction() {
+export default function ModalNewMonthTransaction() {
   const {addTransaction} = useContext(MonthsContext) as MonthsContextType
   const {loadCurrentYear} = useContext(YearsContext) as YearsContextType
 
@@ -19,7 +19,7 @@ export default function ModalNewTransaction() {
     Swal.fire({text: 'Criando transação', showConfirmButton: false})
     Swal.showLoading()
 
-    const created = await addTransaction(new Transaction({...data}))
+    const created = await addTransaction(new MonthTransaction({...data}))
     if (!created) {
       Swal.fire("Ops", "não foi possível criar a transação", "error")
       return
@@ -35,7 +35,7 @@ export default function ModalNewTransaction() {
     title="Criar nova transação"
     confirmButtonText="Adicionar transação"
     content={
-      <ModalTransactionForm
+      <ModalMonthTransactionForm
         formRef={formRef}
         handleFormSubmit={handleFormSubmit}
       />

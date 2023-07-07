@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ITransaction, Transaction } from './transaction';
+import { IMonthTransaction, MonthTransaction } from './monthTransaction';
 
 export interface IMonth {
   id: string
   name: string
-  transactions: ITransaction[]
+  transactions: IMonthTransaction[]
   startAt: Date
   create: () => Promise<boolean>
   delete: () => Promise<boolean>
@@ -20,7 +20,7 @@ export interface IMonth {
 export class Month implements IMonth {
   id: string
   name: string
-  transactions: ITransaction[];
+  transactions: IMonthTransaction[];
   startAt: Date;
 
   constructor(data?: any) {
@@ -36,7 +36,7 @@ export class Month implements IMonth {
       typeof data.transactions == 'object' &&
       data.transactions.length
     ) {
-      this.transactions = data.transactions.map((t:any) => new Transaction(t))
+      this.transactions = data.transactions.map((t:any) => new MonthTransaction(t))
     } else {
       this.transactions = []
     }
@@ -96,20 +96,20 @@ export class Month implements IMonth {
   }
 
   public calcTotalAmount(): number {
-    return this.transactions.reduce((total: number, t: ITransaction) => {
+    return this.transactions.reduce((total: number, t: IMonthTransaction) => {
       if (t.isCredit) return total + t.amount
       return total - t.amount
     }, 0)
   };
 
   calcTotalDiscount(): number {
-    return this.transactions.reduce((total: number, t: ITransaction) => (
+    return this.transactions.reduce((total: number, t: IMonthTransaction) => (
       total + t.discount
     ), 0)
   }
 
   calcTotalSubtotal(): number {
-    return this.transactions.reduce((total: number, t: ITransaction) => {
+    return this.transactions.reduce((total: number, t: IMonthTransaction) => {
       if (t.isCredit) return total + t.calcSubtotal()
       return total - t.calcSubtotal()
     }, 0)
@@ -119,7 +119,7 @@ export class Month implements IMonth {
     return this.transactions.filter(
       t => t.isCredit
     ).reduce(
-      (total: number, t: ITransaction) => total + t.calcSubtotal(),
+      (total: number, t: IMonthTransaction) => total + t.calcSubtotal(),
       0
     )
   }
@@ -128,7 +128,7 @@ export class Month implements IMonth {
     return this.transactions.filter(
       t => !t.isCredit
     ).reduce(
-      (total: number, t: ITransaction) => total + t.calcSubtotal(),
+      (total: number, t: IMonthTransaction) => total + t.calcSubtotal(),
       0
     )
   }
@@ -142,7 +142,7 @@ export type MonthsContextType = {
   addMonth: (month: IMonth) => Promise<boolean>
   removeMonth: (month: IMonth) => Promise<boolean>
   updateMonth: (data?: any) => Promise<boolean>
-  addTransaction: (transaction: ITransaction) => Promise<boolean>
-  removeTransaction: (transaction: ITransaction) => Promise<boolean>
-  updateTransaction: (transaction: ITransaction) => Promise<boolean>
+  addTransaction: (transaction: IMonthTransaction) => Promise<boolean>
+  removeTransaction: (transaction: IMonthTransaction) => Promise<boolean>
+  updateTransaction: (transaction: IMonthTransaction) => Promise<boolean>
 }

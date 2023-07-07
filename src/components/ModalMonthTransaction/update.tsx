@@ -1,21 +1,21 @@
 'use client'
 
-import { ITransaction, Transaction } from "@/types/transaction";
+import { IMonthTransaction, MonthTransaction } from "@/types/monthTransaction";
 import Modal from "../Modal";
 import { useContext, useRef } from "react";
 import { formatCurrency } from "@/helpers/formatCurrency";
-import ModalTransactionForm from "./form";
+import ModalMonthTransactionForm from "./form";
 import { MonthsContext } from "@/contexts/MonthContext";
 import { MonthsContextType } from "@/types/month";
 import Swal from "sweetalert2";
 import { FormHandles } from "@unform/core";
 
 
-interface ModalUpdateTransactionProps {
-  transaction: ITransaction
+interface ModalUpdateMonthTransactionProps {
+  transaction: IMonthTransaction
 }
 
-export default function ModalUpdateTransaction(props: ModalUpdateTransactionProps) {
+export default function ModalUpdateMonthTransaction(props: ModalUpdateMonthTransactionProps) {
   const {updateTransaction} = useContext(MonthsContext) as MonthsContextType
 
   const formRef = useRef<FormHandles | null>(null)
@@ -24,7 +24,7 @@ export default function ModalUpdateTransaction(props: ModalUpdateTransactionProp
     Swal.fire({text: 'Atualizando transação', showConfirmButton: false})
     Swal.showLoading()
 
-    const transaction = new Transaction({
+    const transaction = new MonthTransaction({
       id: props.transaction.id,
       ...data
     })
@@ -41,7 +41,7 @@ export default function ModalUpdateTransaction(props: ModalUpdateTransactionProp
     title="Atualizar transação"
     confirmButtonText="Salvar transação"
     onConfirm={() => formRef?.current?.submitForm()}
-    content={<ModalTransactionForm
+    content={<ModalMonthTransactionForm
       formRef={formRef}
       handleFormSubmit={handleFormSubmit}
       initialData={{
