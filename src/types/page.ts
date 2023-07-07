@@ -12,8 +12,8 @@ export interface IPage {
 export const pages: IPage[] = [
   {name: 'dashboard', label: 'Dashboard', url: '/dashboard', urlVariants: ['/dashboard'], icon: faDashboard},
   {name: 'periods', label: 'Períodos', url: '/periodos', urlVariants: ['/periodos', '/periodos/[id]', '/periodos/meses/[...slug]'], icon: faCalendar},
-  {name: 'receipts', label: 'Receitas', url: '/receitas', urlVariants: ['/receitas'], icon: faArrowUp},
-  {name: 'expenses', label: 'Despesas', url: '/despesas', urlVariants: ['/despesas'], icon: faArrowDown},
+  {name: 'receipts', label: 'Receitas fixas', url: '/receitas', urlVariants: ['/receitas'], icon: faArrowUp},
+  {name: 'expenses', label: 'Despesas fixas', url: '/despesas', urlVariants: ['/despesas'], icon: faArrowDown},
 ]
 
 export function getCurrentPage(router: NextRouter): IPage {

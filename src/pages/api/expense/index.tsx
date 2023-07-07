@@ -3,6 +3,7 @@ import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
 
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
   if (!session?.user?.email) {
@@ -27,19 +28,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const {id: userId} = user
 
-  if (req.method == "GET") {
-    const receipts = await prisma.receipt.findMany({
+  if (req.method == 'GET') {
+    const expenses = await prisma.expense.findMany({
       where: {userId}
     })
 
-    res.status(200).json({receipts})
+    res.status(200).json({expenses})
     return
   }
 
-  if (req.method == 'POST') {
+  if (req.method == "POST") {
     const {name, baseAmount} = JSON.parse(req.body)
 
-    const receipt = await prisma.receipt.create({
+    const expense = await prisma.expense.create({
       data: {name, baseAmount, userId}
     })
 
@@ -55,14 +56,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     const transactions = months.map(m => (
-      {name, amount: baseAmount, discount: 0, isCredit: true, monthId: m.id}
+      {name, amount: baseAmount, discount: 0, isCredit: false, monthId: m.id}
     ))
 
     await prisma.transaction.createMany({
       data: transactions
     })
 
-    res.status(201).json({receipt})
+    res.status(201).json({expense})
     return
   }
 
