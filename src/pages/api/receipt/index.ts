@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       {name, amount: baseAmount, discount: 0, isCredit: true, monthId: m.id}
     ))
 
-    await prisma.transaction.createMany({
+    await prisma.monthTransaction.createMany({
       data: transactions
     })
 

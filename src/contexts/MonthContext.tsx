@@ -1,7 +1,7 @@
 
 import { IMonth, Month, MonthsContextType } from "@/types/month";
 import { getCurrentPage } from "@/types/page";
-import { ITransaction } from "@/types/transaction";
+import { IMonthTransaction } from "@/types/monthTransaction";
 import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 
@@ -112,7 +112,7 @@ function MonthsProvider({
     return true
   }
 
-  const addTransaction = async (transaction: ITransaction): Promise<boolean> => {
+  const addTransaction = async (transaction: IMonthTransaction): Promise<boolean> => {
     if (!monthSelected) return false
 
     if (!await transaction.create()) {
@@ -125,7 +125,7 @@ function MonthsProvider({
     return true
   }
 
-  const removeTransaction = async (transaction: ITransaction): Promise<boolean> => {
+  const removeTransaction = async (transaction: IMonthTransaction): Promise<boolean> => {
     if (!monthSelected) return false
 
     if (!await transaction.delete()) {
@@ -137,7 +137,7 @@ function MonthsProvider({
     return true
   }
 
-  const updateTransaction = async (transaction: ITransaction): Promise<boolean> => {
+  const updateTransaction = async (transaction: IMonthTransaction): Promise<boolean> => {
     if (!monthSelected) return false
 
     if (!await transaction.update()) {

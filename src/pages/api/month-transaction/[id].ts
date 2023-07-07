@@ -1,7 +1,8 @@
+import prisma from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import prisma from "@/lib/prisma";
+
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -26,14 +27,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  if (req.method == 'POST') {
-    const {name, amount, discount, isCredit, monthId} = JSON.parse(req.body)
+  const {id} = req.query
 
-    const transaction = await prisma.transaction.create({
-      data: {name, amount, discount, isCredit, monthId}
+  if (!id || typeof id != 'string') {
+    res.status(409).json({error: 'missing id'})
+    return
+  }
+
+  if (req.method == 'DELETE') {
+    await prisma.monthTransaction.delete({where: {id}})
+    res.status(200).json({})
+    return
+  }
+
+  if (req.method == "PUT") {
+    const {name, amount, discount, isCredit} = JSON.parse(req.body)
+
+    await prisma.monthTransaction.update({
+      where: {id},
+      data: {name, amount, discount, isCredit}
     })
-
-    res.status(201).json(transaction)
+    res.status(200).json({})
     return
   }
 
