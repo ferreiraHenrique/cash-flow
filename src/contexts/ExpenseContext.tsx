@@ -1,4 +1,4 @@
-import { Expense, ExpensesContextType, IExpense } from "@/types/expenses";
+import { Expense, ExpensesContextType, IExpense } from "@/types/expense";
 import { createContext, useEffect, useState } from "react";
 
 
@@ -18,7 +18,7 @@ function ExpensesProvider({
     const fetchAll = async () => {
       const resp = await fetch("/api/expense")
       if (resp.status == 200) {
-        const {expenses} = await resp.json()
+        const { expenses } = await resp.json()
         setExpenses(expenses.map((e: any) => new Expense(e)))
         setIsLoading(false)
       }
@@ -36,11 +36,29 @@ function ExpensesProvider({
     return true
   }
 
+  const updateExpense = async (expense: IExpense) => {
+    if (!await expense.update()) {
+      return false
+    }
+
+    const swap = expenses.map(e => {
+      if (e.id == expense.id) {
+        return expense
+      }
+
+      return e
+    })
+    setExpenses([...swap])
+
+    return true
+  }
+
   return (
     <ExpensesContext.Provider value={{
       expenses,
       isLoading,
-      addExpense
+      addExpense,
+      updateExpense
     }}>
       {children}
     </ExpensesContext.Provider>

@@ -3,16 +3,16 @@ import Modal from "../Modal";
 import { FormHandles } from "@unform/core";
 import ModalReceiptForm from "./form";
 import Swal from "sweetalert2";
-import { Expense, ExpensesContextType } from "@/types/expenses";
+import { Expense, ExpensesContextType } from "@/types/expense";
 import { ExpensesContext } from "@/contexts/ExpenseContext";
 
 
 export default function ModalNewExpense() {
-  const {addExpense} = useContext(ExpensesContext) as ExpensesContextType
+  const { addExpense } = useContext(ExpensesContext) as ExpensesContextType
 
   const formRef = useRef<FormHandles | null>(null)
   const handleFormSubmit = async (data: any) => {
-    Swal.fire({text: 'Criando despesa', showConfirmButton: false})
+    Swal.fire({ text: 'Criando despesa', showConfirmButton: false })
     Swal.showLoading()
 
     const created = await addExpense(new Expense(data))
