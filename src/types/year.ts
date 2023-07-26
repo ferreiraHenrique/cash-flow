@@ -6,6 +6,7 @@ export interface IYear {
   name: string
   months: IMonth[]
   create: () => Promise<boolean>
+  delete: () => Promise<boolean>
 }
 
 export class Year implements IYear {
@@ -47,6 +48,19 @@ export class Year implements IYear {
       return false
     }
   }
+
+  async delete(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/year/${this.id}`, { method: "DELETE" })
+      if (res.status != 200) {
+        return false
+      }
+
+      return true
+    } catch (err) {
+      return false
+    }
+  }
 }
 
 export type YearsContextType = {
@@ -54,4 +68,5 @@ export type YearsContextType = {
   isLoading: boolean
   loadCurrentYear: (showLoading?: boolean) => void
   addYear: (year: IYear) => Promise<boolean>
+  deleteYear: (year: IYear) => Promise<boolean>
 }

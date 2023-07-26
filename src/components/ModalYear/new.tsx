@@ -8,14 +8,14 @@ import { Year, YearsContextType } from "@/types/year";
 
 
 export default function ModalNewYear() {
-  const {addYear} = useContext(YearsContext) as YearsContextType
+  const { addYear } = useContext(YearsContext) as YearsContextType
 
   const formRef = useRef<FormHandles | null>(null)
   const handleFormSubmit = async (data: any) => {
-    Swal.fire({text: 'Criando período', showConfirmButton: false})
+    Swal.fire({ text: 'Criando período', showConfirmButton: false })
     Swal.showLoading()
 
-    const created = await addYear(new Year({...data}))
+    const created = await addYear(new Year({ ...data }))
     if (!created) {
       Swal.fire("Ops", "não foi possível criar o período", "error")
       return

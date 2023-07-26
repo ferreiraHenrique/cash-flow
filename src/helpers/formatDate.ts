@@ -18,3 +18,8 @@ export function formatStrinfy(d: Date): string {
 
   return `${year}-${month}-${day}`
 }
+
+export function getMonthLabel(d: Date): string {
+  return `${d.toLocaleString('pt-BR', { month: 'long' }).charAt(0).toUpperCase()
+    }${d.toLocaleString('pt-BR', { month: 'long' }).slice(1)}`
+}

@@ -6,7 +6,8 @@ import { ModalContext } from "@/contexts/ModalContext";
 import { ModalContextType } from "@/types/modal";
 import ModalNewYear from "../ModalYear/new";
 import { YearsContext } from "@/contexts/YearContext";
-import { YearsContextType } from "@/types/year";
+import { IYear, YearsContextType } from "@/types/year";
+import NotFound from "../NotFound";
 
 
 export default function YearList() {
@@ -14,8 +15,8 @@ export default function YearList() {
 
   const [modalSelection, setModalSelection] = useState('')
 
-  const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {years} = useContext(YearsContext) as YearsContextType
+  const { toggleModal } = useContext(ModalContext) as ModalContextType
+  const { years, deleteYear } = useContext(YearsContext) as YearsContextType
 
   return (
     <>
@@ -31,10 +32,21 @@ export default function YearList() {
           />
         </h5>
 
-        <div className={`${grid} opacity-60 text-sm`}>
-          <span>Nome</span>
-        </div>
-        <hr className="mt-4 mb-2" />
+        {!years.length &&
+          <div className="mt-10 grid text-center justify-center">
+            <h2 className="opacity-40"><i>Sem períodos cadastrados</i></h2>
+            <NotFound />
+          </div>
+        }
+
+        {years.length > 0 &&
+          <>
+            <div className={`${grid} opacity-60 text-sm`}>
+              <span>Nome</span>
+            </div>
+            <hr className="mt-4 mb-2" />
+          </>
+        }
 
         <div className="max-h-52 overflow-y-scroll">
           {years.map(y => (
@@ -59,7 +71,7 @@ export default function YearList() {
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    <FontAwesomeIcon icon={faTrash} onClick={() => deleteYear(y)} />
                   </a>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import { Year } from "@/types/year";
 import { CreditCard } from "@/types/creditCard";
 import { MonthTransaction } from "@/types/monthTransaction";
 import loadCreditCards from "@/utils/loadCreditCards";
+import { getMonthLabel } from "@/helpers/formatDate";
 
 
 
@@ -74,38 +75,59 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method == 'POST') {
-    const { name: yearName } = JSON.parse(req.body)
-
-    const newMonths = []
-    for (let i = 0; i < 12; i++) {
-      const currentMonth = new Date(yearName, i)
-      const monthLabel = `${currentMonth.toLocaleString('pt-BR', { month: 'long' }).charAt(0).toUpperCase()
-        }${currentMonth.toLocaleString('pt-BR', { month: 'long' }).slice(1)}`
-
-      newMonths.push(
-        {
-          name: monthLabel,
-          startAt: currentMonth,
-          userId: user.id
-        }
-      )
-    }
-
-    const year = await prisma.year.create({
-      data: {
-        name: yearName,
-        userId: user.id,
-        startAt: new Date(yearName, 0),
-        months: { create: newMonths }
-      },
-      include: {
-        months: true
-      }
-    })
-
-    res.status(200).json(year)
-    return
+    return postHandler(req, res, userId)
   }
 
   res.status(404).json({})
+}
+
+async function postHandler(req: NextApiRequest, res: NextApiResponse, userId: string) {
+  const { name: yearName } = JSON.parse(req.body)
+
+  const newMonths = []
+  for (let i = 0; i < 12; i++) {
+    const startAt = new Date(yearName, i)
+    const monthLabel = getMonthLabel(startAt)
+
+    newMonths.push({ name: monthLabel, startAt, userId })
+  }
+
+  const year = await prisma.year.create({
+    data: {
+      name: yearName,
+      userId,
+      startAt: new Date(yearName, 0),
+      months: { create: newMonths }
+    },
+    include: {
+      months: true
+    }
+  })
+
+  let transactions: any[] = []
+
+  for (let i = 0; i < year.months.length; i++) {
+    const m = year.months[i]
+
+    const receipts = await prisma.receipt.findMany({
+      where: { userId, isActive: true, startAt: { lte: m.startAt } }
+    })
+    transactions = [
+      ...transactions,
+      ...receipts.map(r => ({ name: r.name, amount: r.baseAmount, isCredit: true, monthId: m.id }))
+    ]
+
+    const expenses = await prisma.expense.findMany({
+      where: { userId, isActive: true, startAt: { lte: m.startAt } }
+    })
+    transactions = [
+      ...transactions,
+      ...expenses.map(e => ({ name: e.name, amount: e.baseAmount, isCredit: false, monthId: m.id }))
+    ]
+  }
+
+  await prisma.monthTransaction.createMany({ data: transactions })
+
+  res.status(200).json(year)
+  return
 }

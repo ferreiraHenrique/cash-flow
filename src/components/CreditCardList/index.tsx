@@ -7,6 +7,7 @@ import { ModalContextType } from "@/types/modal";
 import { CreditCardsContext } from "@/contexts/CreditCardContext";
 import { CreditCardsContextType } from "@/types/creditCard";
 import ModalNewCreditCard from "../ModalCreditCard/new";
+import NotFound from "../NotFound";
 
 
 export default function CreditCardList() {
@@ -31,11 +32,22 @@ export default function CreditCardList() {
           />
         </h5>
 
-        <div className={`${grid} opacity-60 text-sm`}>
-          <span>Nome</span>
-          <span>Final</span>
-        </div>
-        <hr className="mt-4 mb-2" />
+        {!creditCards.length &&
+          <div className="mt-10 grid text-center justify-center">
+            <h2 className="opacity-40"><i>Sem cartões cadastrados</i></h2>
+            <NotFound />
+          </div>
+        }
+
+        {creditCards.length > 0 &&
+          <>
+            <div className={`${grid} opacity-60 text-sm`}>
+              <span>Nome</span>
+              <span>Final</span>
+            </div>
+            <hr className="mt-4 mb-2" />
+          </>
+        }
 
         <div className="max-h-52 overflow-y-scroll">
           {creditCards.map(c => (
