@@ -36,7 +36,12 @@ export class Expense implements IExpense {
       this.startAt = new Date(`${data.startAt} 00:00`)
     }
 
-    this.isActive = data?.isActive == true
+    this.isActive = true
+    if (typeof data.isActive == 'boolean') {
+      this.isActive = data.isActive == true
+    } else if (typeof data.isActive == 'string') {
+      this.isActive = data.isActive == 'true'
+    }
   }
 
   async create(): Promise<boolean> {
