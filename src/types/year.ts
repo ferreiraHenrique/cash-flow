@@ -23,7 +23,9 @@ export class Year implements IYear {
     this.name = data?.name
 
     this.months = []
-    if (data?.months) {
+    if (data?.months && data.months.every((m: IMonth) => m instanceof Month)) {
+      this.months = data.months
+    } else if (data?.months) {
       this.months = data.months.map((m: any) => new Month(m))
     }
   }
@@ -32,7 +34,7 @@ export class Year implements IYear {
     try {
       const res = await fetch("/api/year", {
         method: "POST",
-        body: JSON.stringify({name: this.name})
+        body: JSON.stringify({ name: this.name })
       })
       if (res.status != 200) {
         return false
@@ -41,7 +43,7 @@ export class Year implements IYear {
       this.id = json.id
 
       return true
-    } catch(err) {
+    } catch (err) {
       return false
     }
   }

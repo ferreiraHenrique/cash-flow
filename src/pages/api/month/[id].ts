@@ -2,6 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import prisma from "@/lib/prisma";
+import { Month } from "@/types/month";
+import { CreditCard } from "@/types/creditCard";
+import loadCreditCards from "@/utils/loadCreditCards";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -25,38 +28,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     return
   }
-  const {id: userId} = user
+  const { id: userId } = user
 
-  const {id} = req.query
+  const { id } = req.query
 
   if (!id || typeof id != 'string') {
-    res.status(409).json({error: 'missing id'})
+    res.status(409).json({ error: 'missing id' })
     return
   }
 
   if (req.method == 'DELETE') {
-    await prisma.month.delete({where: {id}})
+    await prisma.month.delete({ where: { id } })
     res.status(200).json({})
     return
   }
 
   if (req.method == 'PUT') {
-    const {name} = JSON.parse(req.body)
+    const { name } = JSON.parse(req.body)
 
     await prisma.month.update({
-      where: {id},
-      data: {name}
+      where: { id },
+      data: { name }
     })
     res.status(200).json({})
     return
   }
 
   if (req.method == 'GET') {
-    const month = await prisma.month.findFirst({
-      where: {id, userId},
-      include: {transactions: true}
+    const _month = await prisma.month.findFirst({
+      where: { id, userId },
+      include: { transactions: true }
     })
-    res.status(200).json({month})
+    const month = new Month(_month)
+
+    const cards = await loadCreditCards(userId)
+    month.addCreditCards(cards)
+
+    res.status(200).json({ month })
     return
   }
 

@@ -3,11 +3,11 @@
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from "../Button"
-import { useContext, useState} from "react"
+import { useContext, useState } from "react"
 import { ModalContext } from "@/contexts/ModalContext"
 import { ModalContextType } from "@/types/modal"
 import { IMonthTransaction } from "@/types/monthTransaction"
-import {formatCurrency} from "@/helpers/formatCurrency"
+import { formatCurrency } from "@/helpers/formatCurrency"
 import ModalNewMonthTransaction from "../ModalMonthTransaction/new"
 import ModalUpdateMonthTransaction from "../ModalMonthTransaction/update"
 import { MonthsContext } from "@/contexts/MonthContext"
@@ -21,11 +21,13 @@ export default function TransactionList() {
   const [modalSelection, setModalSelection] = useState('')
   const [transactionSelected, setTransactionSelected] = useState<IMonthTransaction | null>(null)
 
-  const {toggleModal} = useContext(ModalContext) as ModalContextType
-  const {monthSelected, removeTransaction} = useContext(MonthsContext) as MonthsContextType
+  const { toggleModal } = useContext(ModalContext) as ModalContextType
+  const { monthSelected, removeTransaction } = useContext(MonthsContext) as MonthsContextType
+
+  // console.log(monthSelected?.name, monthSelected?.creditCards)
 
   const handleRemove = async (t: IMonthTransaction) => {
-    Swal.fire({text: "Excluindo transação", showConfirmButton: false})
+    Swal.fire({ text: "Excluindo transação", showConfirmButton: false })
     Swal.showLoading()
 
     if (!await removeTransaction(t)) {
@@ -47,7 +49,7 @@ export default function TransactionList() {
           Transações ({monthSelected.name})
           <Button
             text="Novo"
-            onClick={() => {setModalSelection('new'); toggleModal()}}
+            onClick={() => { setModalSelection('new'); toggleModal() }}
           />
         </h5>
 

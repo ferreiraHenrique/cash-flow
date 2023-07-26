@@ -1,6 +1,4 @@
-import { getCurrentPage } from "@/types/page";
 import { IYear, Year, YearsContextType } from "@/types/year";
-import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 
 
@@ -22,7 +20,7 @@ function YearsProvider({
     const currentYear = (new Date).getFullYear()
     const res = await fetch(`/api/year?byLabel=${currentYear}`)
     if (res.status == 200) {
-      const {year} = await res.json()
+      const { year } = await res.json()
       return new Year(year)
     }
 
@@ -32,7 +30,7 @@ function YearsProvider({
   const fetchCurrentId = async (id: string): Promise<IYear | null> => {
     const res = await fetch(`/api/year/${id}`)
     if (res.status == 200) {
-      const {year} = await res.json()
+      const { year } = await res.json()
       return new Year(year)
     }
 
@@ -43,7 +41,7 @@ function YearsProvider({
     const fetchAll = async () => {
       const res = await fetch("/api/year")
       if (res.status == 200) {
-        const {years} = await res.json()
+        const { years } = await res.json()
         setYears(years.map((y: any) => new Year(y)))
         setIsLoading(false)
       }
