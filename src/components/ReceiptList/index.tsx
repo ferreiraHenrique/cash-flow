@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { formatCurrency } from "@/helpers/formatCurrency"
 import { formatDate } from "@/helpers/formatDate"
+import NotFound from "../NotFound"
 
 
 export default function ReceiptList() {
@@ -40,13 +41,24 @@ export default function ReceiptList() {
           />
         </h5>
 
-        <div className={`${grid} opacity-60 text-sm`}>
-          <span>Nome</span>
-          <span className="text-right">Valor base</span>
-          <span className="text-right">Início</span>
-          <span className="text-right">Status</span>
-        </div>
-        <hr className="mt-4 mb-2" />
+        {!receipts.length &&
+          <div className="mt-10 grid text-center justify-center">
+            <h2 className="opacity-40"><i>Sem receitas cadastradas</i></h2>
+            <NotFound />
+          </div>
+        }
+
+        {receipts.length > 0 &&
+          <>
+            <div className={`${grid} opacity-60 text-sm`}>
+              <span>Nome</span>
+              <span className="text-right">Valor base</span>
+              <span className="text-right">Início</span>
+              <span className="text-right">Status</span>
+            </div>
+            <hr className="mt-4 mb-2" />
+          </>
+        }
 
         <div className="max-h-96 overflow-y-scroll">
           {receipts.map(r => (

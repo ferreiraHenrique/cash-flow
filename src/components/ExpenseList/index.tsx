@@ -7,6 +7,7 @@ import { ExpensesContextType, IExpense } from "@/types/expense"
 import ModalNewExpense from "../ModalExpense/new"
 import { formatCurrency } from "@/helpers/formatCurrency"
 import { formatDate } from "@/helpers/formatDate"
+import NotFound from "../NotFound"
 
 
 export default function ExpenseList() {
@@ -38,13 +39,24 @@ export default function ExpenseList() {
           />
         </h5>
 
-        <div className={`${grid} opacity-60 text-sm`}>
-          <span>Nome</span>
-          <span className="text-right">Valor base</span>
-          <span className="text-right">Início</span>
-          <span className="text-right">Status</span>
-        </div>
-        <hr className="mt-4 mb-2" />
+        {!expenses.length &&
+          <div className="mt-10 grid text-center justify-center">
+            <h2 className="opacity-40"><i>Sem despesas cadastradas</i></h2>
+            <NotFound />
+          </div>
+        }
+
+        {expenses.length > 0 &&
+          <>
+            <div className={`${grid} opacity-60 text-sm`}>
+              <span>Nome</span>
+              <span className="text-right">Valor base</span>
+              <span className="text-right">Início</span>
+              <span className="text-right">Status</span>
+            </div>
+            <hr className="mt-4 mb-2" />
+          </>
+        }
 
         <div className="max-h-96 overflow-y-scroll">
           {expenses.map(e => (
