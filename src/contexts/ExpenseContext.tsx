@@ -36,11 +36,29 @@ function ExpensesProvider({
     return true
   }
 
+  const updateExpense = async (expense: IExpense) => {
+    if (!await expense.update()) {
+      return false
+    }
+
+    const swap = expenses.map(e => {
+      if (e.id == expense.id) {
+        return expense
+      }
+
+      return e
+    })
+    setExpenses([...swap])
+
+    return true
+  }
+
   return (
     <ExpensesContext.Provider value={{
       expenses,
       isLoading,
-      addExpense
+      addExpense,
+      updateExpense
     }}>
       {children}
     </ExpensesContext.Provider>

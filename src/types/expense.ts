@@ -8,6 +8,7 @@ export interface IExpense {
   startAt: Date
   isActive: boolean
   create: () => Promise<boolean>
+  update: () => Promise<boolean>
 }
 
 export class Expense implements IExpense {
@@ -60,10 +61,28 @@ export class Expense implements IExpense {
       return false
     }
   }
+
+  async update(): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/expense/${this.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ isActive: this.isActive })
+      })
+
+      if (res.status != 200) {
+        return false
+      }
+
+      return true
+    } catch (err) {
+      return false
+    }
+  }
 }
 
 export type ExpensesContextType = {
   expenses: IExpense[]
   isLoading: boolean
   addExpense: (expense: IExpense) => Promise<boolean>
+  updateExpense: (expense: IExpense) => Promise<boolean>
 }
