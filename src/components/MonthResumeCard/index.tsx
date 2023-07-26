@@ -13,8 +13,6 @@ interface MonthResumeCardProps {
 export default function MonthResumeCard(props: MonthResumeCardProps) {
   const { monthSelected } = useContext(MonthsContext) as MonthsContextType
 
-  console.log(props.month)
-
   let selectionClasses = "transition-opacity ease-in-out duration-300 opacity-80 hover:opacity-100"
   if (monthSelected && monthSelected.id == props.month.id) {
     selectionClasses = "opacity-100"

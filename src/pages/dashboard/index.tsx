@@ -16,9 +16,9 @@ export default function DashboardPage() {
     <MainLayout>
       <YearsProvider>
         <MonthsProvider notFetchAll={true}>
-          <div className='w-full p-6 mx-2'>
+          <div className='w-full p-6'>
             <div className='grid grid-cols-4 gap-6'>
-                <MonthListResumeCard />
+              <MonthListResumeCard />
             </div>
 
             <ModalProvider>
@@ -34,10 +34,10 @@ export default function DashboardPage() {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
   if (!session) {
-    return {redirect: {destination: '/signin'}}
+    return { redirect: { destination: '/signin' } }
   }
 
   return {
-    props: {session}
+    props: { session }
   }
 }

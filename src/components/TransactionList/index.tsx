@@ -13,6 +13,7 @@ import ModalUpdateMonthTransaction from "../ModalMonthTransaction/update"
 import { MonthsContext } from "@/contexts/MonthContext"
 import { MonthsContextType } from "@/types/month"
 import Swal from 'sweetalert2'
+import NotFound from '../NotFound'
 
 
 export default function TransactionList() {
@@ -23,8 +24,6 @@ export default function TransactionList() {
 
   const { toggleModal } = useContext(ModalContext) as ModalContextType
   const { monthSelected, removeTransaction } = useContext(MonthsContext) as MonthsContextType
-
-  // console.log(monthSelected?.name, monthSelected?.creditCards)
 
   const handleRemove = async (t: IMonthTransaction) => {
     Swal.fire({ text: "Excluindo transação", showConfirmButton: false })
@@ -39,7 +38,12 @@ export default function TransactionList() {
   }
 
   if (!monthSelected) {
-    return <></>
+    return (
+      <div className='bg-white rounded-xl grid justify-center text-center p-10'>
+        <h2 className="opacity-40"><i>Sem registros cadastrados</i></h2>
+        <NotFound />
+      </div>
+    )
   }
 
   return (
