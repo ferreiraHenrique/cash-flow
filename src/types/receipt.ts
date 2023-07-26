@@ -1,7 +1,7 @@
-import { unformatCurrency } from "@/helpers/formatCurrency";
-import { v4 as uuidv4 } from "uuid";
+import { unformatCurrency } from '@/helpers/formatCurrency';
+import { v4 as uuidv4 } from 'uuid';
 
-export interface IExpense {
+export interface IReceipt {
   id: string
   name: string
   baseAmount: number
@@ -11,12 +11,12 @@ export interface IExpense {
   update: () => Promise<boolean>
 }
 
-export class Expense implements IExpense {
+export class Receipt implements IReceipt {
   id: string;
   name: string;
   baseAmount: number;
   startAt: Date
-  isActive: boolean
+  isActive: boolean;
 
   constructor(data?: any) {
     this.id = data?.id ?? uuidv4()
@@ -46,7 +46,7 @@ export class Expense implements IExpense {
 
   async create(): Promise<boolean> {
     try {
-      const res = await fetch("/api/expense", {
+      const res = await fetch("/api/receipt", {
         method: "POST",
         body: JSON.stringify({
           name: this.name,
@@ -54,13 +54,12 @@ export class Expense implements IExpense {
           startAt: this.startAt,
         })
       })
-
       if (res.status != 201) {
         return false
       }
 
-      const { expense } = await res.json()
-      this.id = expense.id
+      const { receipt } = await res.json()
+      this.id = receipt.id
       return true
     } catch (err) {
       return false
@@ -69,7 +68,7 @@ export class Expense implements IExpense {
 
   async update(): Promise<boolean> {
     try {
-      const res = await fetch(`/api/expense/${this.id}`, {
+      const res = await fetch(`/api/receipt/${this.id}`, {
         method: "PUT",
         body: JSON.stringify({ isActive: this.isActive })
       })
@@ -85,9 +84,9 @@ export class Expense implements IExpense {
   }
 }
 
-export type ExpensesContextType = {
-  expenses: IExpense[]
+export type ReceiptsContextType = {
+  receipts: IReceipt[]
   isLoading: boolean
-  addExpense: (expense: IExpense) => Promise<boolean>
-  updateExpense: (expense: IExpense) => Promise<boolean>
+  addReceipt: (receipt: IReceipt) => Promise<boolean>
+  updateReceipt: (receipt: IReceipt) => Promise<boolean>
 }

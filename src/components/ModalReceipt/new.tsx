@@ -4,15 +4,15 @@ import { FormHandles } from "@unform/core";
 import ModalReceiptForm from "./form";
 import Swal from "sweetalert2";
 import { ReceiptsContext } from "@/contexts/ReceiptContext";
-import { Receipt, ReceiptsContextType } from "@/types/receipts";
+import { Receipt, ReceiptsContextType } from "@/types/receipt";
 
 
 export default function ModalNewReceipt() {
-  const {addReceipt} = useContext(ReceiptsContext) as ReceiptsContextType
+  const { addReceipt } = useContext(ReceiptsContext) as ReceiptsContextType
 
   const formRef = useRef<FormHandles | null>(null)
   const handleFormSubmit = async (data: any) => {
-    Swal.fire({text: 'Criando receita', showConfirmButton: false})
+    Swal.fire({ text: 'Criando receita', showConfirmButton: false })
     Swal.showLoading()
 
     const created = await addReceipt(new Receipt(data))

@@ -25,44 +25,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const {id: userId} = user
+  const { id: userId } = user
 
   if (req.method == "GET") {
     const receipts = await prisma.receipt.findMany({
-      where: {userId}
+      where: { userId }
     })
 
-    res.status(200).json({receipts})
+    res.status(200).json({ receipts })
     return
   }
 
   if (req.method == 'POST') {
-    const {name, baseAmount} = JSON.parse(req.body)
+    const { name, baseAmount, startAt: _startAt } = JSON.parse(req.body)
+
+    const startAt = new Date(_startAt)
 
     const receipt = await prisma.receipt.create({
-      data: {name, baseAmount, userId}
+      data: { name, baseAmount, userId, startAt }
     })
-
-    const today = new Date()
 
     const months = await prisma.month.findMany({
       where: {
         userId,
         startAt: {
-          gte: new Date(today.getFullYear(), today.getMonth())
+          gte: new Date(startAt.getFullYear(), startAt.getMonth())
         }
       }
     })
 
     const transactions = months.map(m => (
-      {name, amount: baseAmount, discount: 0, isCredit: true, monthId: m.id}
+      { name, amount: baseAmount, discount: 0, isCredit: true, monthId: m.id }
     ))
 
     await prisma.monthTransaction.createMany({
       data: transactions
     })
 
-    res.status(201).json({receipt})
+    res.status(201).json({ receipt })
     return
   }
 
