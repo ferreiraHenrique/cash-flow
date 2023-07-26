@@ -8,14 +8,14 @@ import { YearsContextType } from "@/types/year";
 
 
 export default function MonthListResumeCard() {
-  const {selectMonth} = useContext(MonthsContext) as MonthsContextType
-  const {years, isLoading} = useContext(YearsContext) as YearsContextType
+  const { selectMonth } = useContext(MonthsContext) as MonthsContextType
+  const { years, isLoading } = useContext(YearsContext) as YearsContextType
 
   const filterMonths = (m: IMonth) => {
     const today = new Date()
 
     return (
-      m.startAt.getMonth() >= today.getMonth() -1 &&
+      m.startAt.getMonth() >= today.getMonth() - 1 &&
       m.startAt.getMonth() <= today.getMonth() + 2
     )
   }
@@ -41,7 +41,7 @@ export default function MonthListResumeCard() {
           </>
         )
       }
-      {!isLoading && years[0].months.filter(filterMonths).map(m => (
+      {!isLoading && years.length > 0 && years[0].months.filter(filterMonths).map(m => (
         <MonthResumeCard
           key={m.id}
           month={m}
