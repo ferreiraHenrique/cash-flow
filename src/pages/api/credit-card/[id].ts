@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import loadCreditCards from "@/utils/loadCreditCards";
-import { Year } from "@/types/year";
-
+import { getServerSession } from "next-auth";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -37,19 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method == 'GET') {
-    const cards = await loadCreditCards(userId)
-
-    const _year = await prisma.year.findFirst({
-      where: { id, userId: user.id },
-      include: { months: { include: { transactions: true } } }
-    })
-    const year = new Year(_year)
-    year.months = year.months.map(m => {
-      m.addCreditCards(cards)
-      return m
+    const card = await prisma.creditCard.findFirst({
+      where: { id, userId },
+      include: { purchases: true }
     })
 
-    res.status(200).json({ year })
+    res.status(200).json({ creditCard: card })
     return
   }
 

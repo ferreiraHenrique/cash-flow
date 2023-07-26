@@ -11,7 +11,9 @@ interface MonthResumeCardProps {
 }
 
 export default function MonthResumeCard(props: MonthResumeCardProps) {
-  const {monthSelected} = useContext(MonthsContext) as MonthsContextType
+  const { monthSelected } = useContext(MonthsContext) as MonthsContextType
+
+  console.log(props.month)
 
   let selectionClasses = "transition-opacity ease-in-out duration-300 opacity-80 hover:opacity-100"
   if (monthSelected && monthSelected.id == props.month.id) {
@@ -20,7 +22,7 @@ export default function MonthResumeCard(props: MonthResumeCardProps) {
 
   return (
     <div
-      onClick={() => props.onClick? props.onClick(props.month) : ''}
+      onClick={() => props.onClick ? props.onClick(props.month) : ''}
     >
       <div className={`h-36 bg-white w-full max-w-full py-4 px-4 mb-6 rounded-xl shadow-xl cursor-pointer ${selectionClasses}`}>
         <h5 className="mb-0 font-sans text-sm font-semibold leading-normal uppercase opacity-40">

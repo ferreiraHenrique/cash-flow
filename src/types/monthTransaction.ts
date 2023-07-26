@@ -43,26 +43,19 @@ export class MonthTransaction implements IMonthTransaction {
     if (typeof data?.amount === 'number') {
       this.amount = data.amount
     } else {
-      this.amount = unformatCurrency(data?.amount.toString() || '0')
+      this.amount = unformatCurrency(data?.amount?.toString() || '0')
     }
 
     if (typeof data?.discount === 'number') {
       this.discount = data.discount
     } else {
-      this.discount = unformatCurrency(data?.discount.toString() || '0')
+      this.discount = unformatCurrency(data?.discount?.toString() || '0')
     }
 
     this.monthId = data?.monthId
   }
 
   async create(): Promise<boolean> {
-    console.log('to create', JSON.stringify({
-      name: this.name,
-      amount: this.amount,
-      discount: this.discount,
-      isCredit: this.isCredit,
-      monthId: this.monthId
-    }))
     try {
       const res = await fetch("/api/month-transaction", {
         method: "POST",
@@ -77,11 +70,11 @@ export class MonthTransaction implements IMonthTransaction {
       if (res.status != 201) {
         return false
       }
-      const {id} = await res.json()
+      const { id } = await res.json()
       this.id = id
 
       return true
-    } catch(err) {
+    } catch (err) {
       return false
     }
   }
@@ -95,7 +88,7 @@ export class MonthTransaction implements IMonthTransaction {
         return false
       }
       return true
-    } catch(err) {
+    } catch (err) {
       return false
     }
   }
@@ -116,13 +109,13 @@ export class MonthTransaction implements IMonthTransaction {
       }
 
       return true
-    } catch(err) {
+    } catch (err) {
       return false
     }
   }
 
   public displayName(): string {
-    const transactionLabel = this.isCredit? '(crédito)' : '(débito)'
+    const transactionLabel = this.isCredit ? '(crédito)' : '(débito)'
     return `${this.name} ${transactionLabel}`
   }
 

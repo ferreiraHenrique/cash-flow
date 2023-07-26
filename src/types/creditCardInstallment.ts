@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 
-export interface ICreditCardTransaction {
+export interface ICreditCardInstallment {
   id: string
   date: Date
   name: string
@@ -9,7 +9,7 @@ export interface ICreditCardTransaction {
   installmentNumber: number
 }
 
-export class CreditCardTransaction implements ICreditCardTransaction {
+export class CreditCardInstallment implements ICreditCardInstallment {
   id: string;
   date: Date;
   name: string;

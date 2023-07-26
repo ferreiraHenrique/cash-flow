@@ -130,22 +130,21 @@ model CreditCard {
   lastNumbers String
   userId      String @db.ObjectId
 
-  CreditCardPurchases CreditCardPurchase[]
+  purchases CreditCardPurchase[]
 
   @@map("creditCards")
 }
 
-model CreditCardTransaction {
+model CreditCardInstallment {
   id                   String   @id @default(auto()) @map("_id") @db.ObjectId
   date                 DateTime
-  name                 String
   amount               Float
   installmentNumber    Int
   creditCardPurchaseId String   @db.ObjectId
 
   creditCardPurchase CreditCardPurchase @relation(fields: [creditCardPurchaseId], references: [id], onDelete: Cascade)
 
-  @@map("creditCardTransactions")
+  @@map("creditCardInstallments")
 }
 
 model CreditCardPurchase {
@@ -155,9 +154,10 @@ model CreditCardPurchase {
   amount               Float
   date                 DateTime
   creditCardId         String   @db.ObjectId
+  firstDueDate         DateTime
 
-  creditCard             CreditCard              @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
-  CreditCardTransactions CreditCardTransaction[]
+  creditCard   CreditCard              @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  installments CreditCardInstallment[]
 
   @@map("creditCardPurchases")
 }

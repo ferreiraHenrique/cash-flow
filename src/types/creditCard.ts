@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
+import { CreditCardPurchase, ICreditCardPurchase } from "./creditCardPurchase";
 
 
 export interface ICreditCard {
   id: string
   name: string
   lastNumbers: string
+  purchases: ICreditCardPurchase[]
   create: () => Promise<boolean>
 }
 
@@ -12,11 +14,22 @@ export class CreditCard implements ICreditCard {
   id: string;
   name: string;
   lastNumbers: string;
+  purchases: ICreditCardPurchase[];
 
   constructor(data?: any) {
     this.id = data?.id || uuidv4()
     this.name = data?.name
     this.lastNumbers = data?.lastNumbers
+    this.purchases = data?.purchases || []
+    this.purchases = []
+
+    if (data?.purchases) {
+      if (data.purchases.every((p: any) => p instanceof CreditCardPurchase)) {
+        this.purchases = data.purchases
+      } else {
+        this.purchases = data.purchases.map((p: any) => new CreditCardPurchase(p))
+      }
+    }
   }
 
   async create(): Promise<boolean> {
@@ -41,4 +54,5 @@ export type CreditCardsContextType = {
   creditCards: ICreditCard[]
   isLoading: boolean
   addCard: (card: ICreditCard) => Promise<boolean>
+  addPurchase: (purchase: ICreditCardPurchase) => Promise<boolean>
 }

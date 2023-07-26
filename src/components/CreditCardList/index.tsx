@@ -49,7 +49,7 @@ export default function CreditCardList() {
                 <div className="flex justify-center gap-4">
                   <a
                     className="opacity-60 hover:opacity-80 transition-all ease-in duration-250"
-                    href={`/periodos/${c.id}`}
+                    href={`/cartoes/${c.id}`}
                   >
                     <FontAwesomeIcon icon={faShare} />
                   </a>
