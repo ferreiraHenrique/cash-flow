@@ -1,4 +1,4 @@
-import { IconDefinition, faArrowDown, faArrowUp, faCalendar, faCreditCard, faDashboard } from "@fortawesome/free-solid-svg-icons"
+import { IconDefinition, faArrowDown, faArrowUp, faCalendar, faCoins, faCreditCard, faDashboard } from "@fortawesome/free-solid-svg-icons"
 import { NextRouter } from "next/router"
 
 export interface IPage {
@@ -15,6 +15,7 @@ export const pages: IPage[] = [
   { name: 'receipts', label: 'Receitas fixas', url: '/receitas', urlVariants: ['/receitas'], icon: faArrowUp },
   { name: 'expenses', label: 'Despesas fixas', url: '/despesas', urlVariants: ['/despesas'], icon: faArrowDown },
   { name: 'cards', label: 'Cartões de crédito', url: '/cartoes', urlVariants: ['/cartoes', '/cartoes/[id]'], icon: faCreditCard },
+  { name: 'financings', label: 'Financiamentos', url: '/financiamentos', urlVariants: ['/financiamentos', '/financiamentos/[id]'], icon: faCoins },
 ]
 
 export function getCurrentPage(router: NextRouter): IPage {

@@ -165,3 +165,28 @@ model CreditCardPurchase {
 
   @@map("creditCardPurchases")
 }
+
+model Financing {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String
+  numberOfInstallments Int
+  amount               Float
+  firstDueDate         DateTime
+  userId               String   @db.ObjectId
+
+  installments FinancingInstallment[]
+
+  @@map("financings")
+}
+
+model FinancingInstallment {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  date              DateTime
+  amount            Float
+  installmentNumber Int
+  financingId       String   @db.ObjectId
+
+  financing Financing @relation(fields: [financingId], references: [id])
+
+  @@map("financingInstallments")
+}

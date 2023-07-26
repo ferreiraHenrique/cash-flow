@@ -1,29 +1,25 @@
 import { unformatCurrency } from "@/helpers/formatCurrency";
 import { v4 as uuidv4 } from "uuid";
-import { CreditCardInstallment } from "./creditCardInstallment";
+import { FinancingInstallment, IFinancingInstallment } from "./financingInstallment";
 
 
-export interface ICreditCardPurchase {
+export interface IFinancing {
   id: string
   name: string
   numberOfInstallments: number
   amount: number
-  date: Date
-  creditCardId: string
   firstDueDate: Date
-  installments: CreditCardInstallment[]
+  installments: IFinancingInstallment[]
   create: () => Promise<boolean>
 }
 
-export class CreditCardPurchase implements ICreditCardPurchase {
-  id: string;
-  name: string;
-  numberOfInstallments: number;
-  amount: number;
-  date: Date;
-  creditCardId: string;
-  firstDueDate: Date;
-  installments: CreditCardInstallment[]
+export class Financing implements IFinancing {
+  id: string
+  name: string
+  numberOfInstallments: number
+  amount: number
+  firstDueDate: Date
+  installments: IFinancingInstallment[];
 
   constructor(data?: any) {
     this.id = data?.id || uuidv4()
@@ -41,14 +37,6 @@ export class CreditCardPurchase implements ICreditCardPurchase {
       this.amount = unformatCurrency(data?.amount.toString() || '0')
     }
 
-    if (data?.date instanceof Date) {
-      this.date = data.date
-    } else if (typeof data?.date == 'string' && data?.date.includes('T')) {
-      this.date = new Date(data.date)
-    } else {
-      this.date = new Date(`${data.date} 00:00`)
-    }
-
     if (data?.firstDueDate instanceof Date) {
       this.firstDueDate = data.firstDueDate
     } else if (typeof data?.firstDueDate == 'string' && data?.firstDueDate.includes('T')) {
@@ -59,21 +47,18 @@ export class CreditCardPurchase implements ICreditCardPurchase {
 
     this.installments = []
     if (data?.installments) {
-      this.installments = data.installments.map((i: any) => new CreditCardInstallment(i))
+      this.installments = data.installments.map((i: any) => new FinancingInstallment(i))
     }
-
-    this.creditCardId = data?.creditCardId
   }
 
   async create(): Promise<boolean> {
     try {
-      const res = await fetch(`/api/credit-card/purchase/${this.creditCardId}`, {
+      const res = await fetch(`/api/financing`, {
         method: 'POST',
         body: JSON.stringify({
           name: this.name,
           amount: this.amount,
           numberOfInstallments: this.numberOfInstallments,
-          date: this.date,
           firstDueDate: this.firstDueDate,
         })
       })
@@ -87,4 +72,12 @@ export class CreditCardPurchase implements ICreditCardPurchase {
       return false
     }
   }
+}
+
+
+export type FinancingsContextType = {
+  financings: IFinancing[]
+  isLoading: boolean
+  addFinancing: (financing: IFinancing) => Promise<boolean>
+  updateInstallment: (installment: IFinancingInstallment) => Promise<boolean>
 }
