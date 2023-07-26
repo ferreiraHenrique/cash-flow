@@ -53,5 +53,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
+  if (req.method == 'DELETE') {
+    await prisma.year.delete({
+      where: { id }
+    })
+    res.status(200).json({})
+    return
+  }
+
   res.status(404).json({})
 }

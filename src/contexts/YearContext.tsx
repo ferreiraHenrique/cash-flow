@@ -92,12 +92,22 @@ function YearsProvider({
     return true
   }
 
+  const deleteYear = async (year: IYear) => {
+    if (!await year.delete()) {
+      return false
+    }
+
+    setYears(years.filter(y => y.id != year.id))
+    return true
+  }
+
   return (
     <YearsContext.Provider value={{
       years,
       isLoading,
       loadCurrentYear,
       addYear,
+      deleteYear,
     }}>
       {children}
     </YearsContext.Provider>
