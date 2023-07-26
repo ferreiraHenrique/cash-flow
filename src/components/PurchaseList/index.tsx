@@ -18,18 +18,13 @@ export default function PurchaseList() {
   const grid = "grid grid-cols-6 gap-4"
 
   const { creditCards, isLoading } = useContext(CreditCardsContext) as CreditCardsContextType
+  const { toggleModal } = useContext(ModalContext) as ModalContextType
 
   if (isLoading) {
     return <></>
   }
 
   const currentCard = creditCards[0]
-
-  console.log(currentCard)
-
-  const [modalSelection, setModalSelection] = useState('')
-
-  const { toggleModal } = useContext(ModalContext) as ModalContextType
 
   return (
     <>
@@ -39,7 +34,6 @@ export default function PurchaseList() {
           <Button
             text="Nova compra"
             onClick={() => {
-              setModalSelection('new')
               toggleModal()
             }}
           />
