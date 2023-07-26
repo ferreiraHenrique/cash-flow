@@ -139,7 +139,7 @@ model CreditCard {
   @@map("creditCards")
 }
 
-model CreditCardInstallment {
+model CreditCardPurchaseInstallment {
   id                   String   @id @default(auto()) @map("_id") @db.ObjectId
   date                 DateTime
   amount               Float
@@ -148,7 +148,7 @@ model CreditCardInstallment {
 
   creditCardPurchase CreditCardPurchase @relation(fields: [creditCardPurchaseId], references: [id], onDelete: Cascade)
 
-  @@map("creditCardInstallments")
+  @@map("creditCardPurchaseInstallments")
 }
 
 model CreditCardPurchase {
@@ -160,8 +160,8 @@ model CreditCardPurchase {
   creditCardId         String   @db.ObjectId
   firstDueDate         DateTime
 
-  creditCard   CreditCard              @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
-  installments CreditCardInstallment[]
+  creditCard   CreditCard                      @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  installments CreditCardPurchaseInstallment[]
 
   @@map("creditCardPurchases")
 }

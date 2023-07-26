@@ -126,7 +126,9 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, userId: st
     ]
   }
 
-  await prisma.monthTransaction.createMany({ data: transactions })
+  if (transactions.length) {
+    await prisma.monthTransaction.createMany({ data: transactions })
+  }
 
   res.status(200).json(year)
   return

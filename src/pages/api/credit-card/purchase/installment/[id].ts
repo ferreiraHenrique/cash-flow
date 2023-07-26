@@ -1,5 +1,5 @@
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
 
@@ -33,13 +33,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  if (req.method == 'GET') {
-    const card = await prisma.creditCard.findFirst({
-      where: { id, userId },
-      include: { purchases: { include: { installments: true } } }
+  if (req.method == "PUT") {
+    const { amount, date } = JSON.parse(req.body)
+    await prisma.creditCardPurchaseInstallment.update({
+      where: { id },
+      data: { amount, date: new Date(date) }
     })
 
-    res.status(200).json({ creditCard: card })
+    const installment = await prisma.creditCardPurchaseInstallment.findFirst({
+      where: { id }
+    })
+
+    const installments = await prisma.creditCardPurchaseInstallment.findMany({
+      where: { creditCardPurchaseId: installment?.creditCardPurchaseId }
+    })
+
+    const totalAmount = installments.reduce((t, i) => t + i.amount, 0)
+    await prisma.creditCardPurchase.update({
+      where: { id: installment?.creditCardPurchaseId },
+      data: { amount: totalAmount }
+    })
+
+    res.status(200).json({})
     return
   }
 
