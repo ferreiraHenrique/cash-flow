@@ -3,7 +3,7 @@ import Button from "../Button"
 import { ModalContextType } from "@/types/modal"
 import { ModalContext } from "@/contexts/ModalContext"
 import { ExpensesContext } from "@/contexts/ExpenseContext"
-import { ExpensesContextType } from "@/types/expenses"
+import { ExpensesContextType } from "@/types/expense"
 import ModalNewExpense from "../ModalExpense/new"
 import { formatCurrency } from "@/helpers/formatCurrency"
 
@@ -12,9 +12,9 @@ export default function ExpenseList() {
   const grid = "grid grid-cols-3 gap4"
 
   const [modalSelection, setModalSelection] = useState('')
-  const {toggleModal} = useContext(ModalContext) as ModalContextType
+  const { toggleModal } = useContext(ModalContext) as ModalContextType
 
-  const {expenses} = useContext(ExpensesContext) as ExpensesContextType
+  const { expenses } = useContext(ExpensesContext) as ExpensesContextType
 
   return (
     <>

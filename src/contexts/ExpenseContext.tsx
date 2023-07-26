@@ -1,4 +1,4 @@
-import { Expense, ExpensesContextType, IExpense } from "@/types/expenses";
+import { Expense, ExpensesContextType, IExpense } from "@/types/expense";
 import { createContext, useEffect, useState } from "react";
 
 
@@ -18,7 +18,7 @@ function ExpensesProvider({
     const fetchAll = async () => {
       const resp = await fetch("/api/expense")
       if (resp.status == 200) {
-        const {expenses} = await resp.json()
+        const { expenses } = await resp.json()
         setExpenses(expenses.map((e: any) => new Expense(e)))
         setIsLoading(false)
       }

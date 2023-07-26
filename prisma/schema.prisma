@@ -116,10 +116,12 @@ model Receipt {
 }
 
 model Expense {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   baseAmount Float
-  userId     String @db.ObjectId
+  userId     String   @db.ObjectId
+  startAt    DateTime
+  isActive   Boolean  @default(true)
 
   @@map("expenses")
 }
