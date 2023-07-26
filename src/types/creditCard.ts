@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { CreditCardPurchase, ICreditCardPurchase } from "./creditCardPurchase";
+import { ICreditCardPurchaseInstallment } from "./creditCardPurchaseInstallment";
 
 
 export interface ICreditCard {
@@ -41,6 +42,10 @@ export class CreditCard implements ICreditCard {
       if (res.status != 201) {
         return false
       }
+
+      const { creditCard } = await res.json()
+      this.id = creditCard.id
+
       return true
 
     } catch (err) {
@@ -55,4 +60,5 @@ export type CreditCardsContextType = {
   isLoading: boolean
   addCard: (card: ICreditCard) => Promise<boolean>
   addPurchase: (purchase: ICreditCardPurchase) => Promise<boolean>
+  updateInstallment: (installment: ICreditCardPurchaseInstallment) => Promise<boolean>
 }

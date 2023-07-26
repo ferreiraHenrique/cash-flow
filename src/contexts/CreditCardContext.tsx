@@ -1,5 +1,6 @@
 import { CreditCard, CreditCardsContextType, ICreditCard } from "@/types/creditCard";
 import { ICreditCardPurchase } from "@/types/creditCardPurchase";
+import { ICreditCardPurchaseInstallment } from "@/types/creditCardPurchaseInstallment";
 import { createContext, useEffect, useState } from "react";
 
 
@@ -46,8 +47,8 @@ function CreditCardsProvider({
 
       if (card) {
         setCreditCards([card])
-        setIsLoading(false)
       }
+      setIsLoading(false)
     }
 
     if (id) {
@@ -80,12 +81,31 @@ function CreditCardsProvider({
     return true
   }
 
+  const updateInstallment = async (installment: ICreditCardPurchaseInstallment): Promise<boolean> => {
+    if (!await installment.update()) {
+      return false
+    }
+
+    const cards = creditCards.map(cc => {
+      cc.purchases = cc.purchases.map(p => {
+        p.installments = p.installments.map(i => i.id == installment.id ? installment : i)
+
+        return p
+      })
+
+      return cc
+    })
+    setCreditCards([...cards])
+    return true
+  }
+
   return (
     <CreditCardsContext.Provider value={{
       creditCards,
       isLoading,
       addCard,
-      addPurchase
+      addPurchase,
+      updateInstallment
     }}>
       {children}
     </CreditCardsContext.Provider>

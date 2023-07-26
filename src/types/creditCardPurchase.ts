@@ -1,6 +1,6 @@
 import { unformatCurrency } from "@/helpers/formatCurrency";
 import { v4 as uuidv4 } from "uuid";
-import { CreditCardInstallment } from "./creditCardInstallment";
+import { CreditCardPurchaseInstallment } from "./creditCardPurchaseInstallment";
 
 
 export interface ICreditCardPurchase {
@@ -11,7 +11,7 @@ export interface ICreditCardPurchase {
   date: Date
   creditCardId: string
   firstDueDate: Date
-  installments: CreditCardInstallment[]
+  installments: CreditCardPurchaseInstallment[]
   create: () => Promise<boolean>
 }
 
@@ -23,7 +23,7 @@ export class CreditCardPurchase implements ICreditCardPurchase {
   date: Date;
   creditCardId: string;
   firstDueDate: Date;
-  installments: CreditCardInstallment[]
+  installments: CreditCardPurchaseInstallment[]
 
   constructor(data?: any) {
     this.id = data?.id || uuidv4()
@@ -59,7 +59,7 @@ export class CreditCardPurchase implements ICreditCardPurchase {
 
     this.installments = []
     if (data?.installments) {
-      this.installments = data.installments.map((i: any) => new CreditCardInstallment(i))
+      this.installments = data.installments.map((i: any) => new CreditCardPurchaseInstallment(i))
     }
 
     this.creditCardId = data?.creditCardId
@@ -81,6 +81,9 @@ export class CreditCardPurchase implements ICreditCardPurchase {
       if (res.status != 201) {
         return false
       }
+
+      const { purchase } = await res.json()
+      this.id = purchase.id
 
       return true
     } catch (err) {
