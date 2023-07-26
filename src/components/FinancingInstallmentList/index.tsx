@@ -17,13 +17,13 @@ export default function FinancingInstallmentList() {
 
   const { toggleModal } = useContext(ModalContext) as ModalContextType
   const { financings, isLoading } = useContext(FinancingsContext) as FinancingsContextType
+  const [installment, setInstallment] = useState<IFinancingInstallment | null>(null)
 
   if (isLoading) {
     return <></>
   }
 
   const current = financings[0]
-  const [installment, setInstallment] = useState<IFinancingInstallment | null>(null)
 
   return (
     <>
