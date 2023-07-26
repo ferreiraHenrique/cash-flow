@@ -15,8 +15,6 @@ export default function ModalNewPurchase() {
   const handleFormSubmit = async (data: any) => {
     Swal.fire({ text: 'Criando compra', showConfirmButton: false })
     Swal.showLoading()
-    console.log(data)
-    console.log(new CreditCardPurchase(data))
 
     if (! await addPurchase(new CreditCardPurchase(data))) {
       Swal.fire("Ops", "não foi possível criar a compra", "error")

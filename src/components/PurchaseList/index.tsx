@@ -1,11 +1,7 @@
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShare } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { formatCurrency } from "@/helpers/formatCurrency";
-import { YearsContext } from "@/contexts/YearContext";
-import { YearsContextType } from "@/types/year";
-import { CreditCard, CreditCardsContextType } from "@/types/creditCard";
+import { CreditCardsContextType } from "@/types/creditCard";
 import { CreditCardsContext } from "@/contexts/CreditCardContext";
 import Button from "../Button";
 import { ModalContext } from "@/contexts/ModalContext";
