@@ -51,7 +51,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         gte: new Date(startAt.getFullYear(), startAt.getMonth()),
         lte: new Date(endAt.getFullYear(), endAt.getMonth())
       }
-      filterStartAt.lte = new Date(_endAt)
     } else {
       data = { name, baseAmount, userId, startAt }
       filterStartAt = {

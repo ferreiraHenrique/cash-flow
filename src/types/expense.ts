@@ -6,6 +6,7 @@ export interface IExpense {
   name: string
   baseAmount: number
   startAt: Date
+  endAt?: Date
   isActive: boolean
   create: () => Promise<boolean>
   update: () => Promise<boolean>
@@ -16,6 +17,7 @@ export class Expense implements IExpense {
   name: string;
   baseAmount: number;
   startAt: Date
+  endAt?: Date
   isActive: boolean
 
   constructor(data?: any) {
@@ -36,6 +38,16 @@ export class Expense implements IExpense {
       this.startAt = new Date(`${data.startAt} 00:00`)
     }
 
+    if (data?.endAt) {
+      if (data.endAt instanceof Date) {
+        this.endAt = data.endAt
+      } else if (typeof data.endAt == 'string' && data.endAt.includes('T')) {
+        this.endAt = new Date(data.endAt)
+      } else {
+        this.endAt = new Date(`${data.endAt} 00:00`)
+      }
+    }
+
     this.isActive = true
     if (typeof data.isActive == 'boolean') {
       this.isActive = data.isActive == true
@@ -52,6 +64,7 @@ export class Expense implements IExpense {
           name: this.name,
           baseAmount: this.baseAmount,
           startAt: this.startAt,
+          endAt: this.endAt,
         })
       })
 
