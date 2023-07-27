@@ -23,15 +23,24 @@ export default function ModalExpenseForm(props: ModalExpenseFormProps) {
     >
       <div className="mt-2 w-full">
         <div className="mb-4">
-          <FormInput name="name" placeholder="Nome" />
+          <FormInput name="name" placeholder="Nome*" />
         </div>
         <div className="mb-4">
-          <FormInput name="baseAmount" placeholder="Valor base (R$)" onInput={onInputAmount} />
+          <FormInput name="baseAmount" placeholder="Valor base (R$)*" onInput={onInputAmount} />
         </div>
         <div className="mb-4 grid gap-2 grid-cols-[30%,1fr] items-center">
-          <label htmlFor="startAt" className="text-xs text-left">Data de início</label>
+          <label htmlFor="startAt" className="text-xs text-left">Data de início*</label>
           <FormInput name="startAt" dataType="date" />
         </div>
+        <div className="mb-4 grid gap-2 grid-cols-[30%,1fr] items-center">
+          <label htmlFor="endAt" className="text-xs text-left">Data de término</label>
+          <FormInput name="endAt" dataType="date" />
+        </div>
+      </div>
+
+      <hr className="mb-2" />
+      <div className="text-right">
+        <small className="opacity-60"><i>* campos obrigatórios</i></small>
       </div>
     </Form>
   )

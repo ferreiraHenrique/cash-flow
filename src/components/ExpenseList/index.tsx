@@ -11,7 +11,7 @@ import NotFound from "../NotFound"
 
 
 export default function ExpenseList() {
-  const grid = "grid grid-cols-4 gap-4"
+  const grid = "grid grid-cols-5 gap-4"
   const isActiveClass = "border-primary bg-primary"
   const isInactiveClass = "border-slate-700 bg-slate-700"
 
@@ -52,6 +52,7 @@ export default function ExpenseList() {
               <span>Nome</span>
               <span className="text-right">Valor base</span>
               <span className="text-right">Início</span>
+              <span className="text-right">Término</span>
               <span className="text-right">Status</span>
             </div>
             <hr className="mt-4 mb-2" />
@@ -65,6 +66,9 @@ export default function ExpenseList() {
                 <span>{e.name}</span>
                 <span className="text-right">{formatCurrency(e.baseAmount)}</span>
                 <span className="text-right">{formatDate(e.startAt)}</span>
+                <span className="text-right">
+                  {e.endAt ? formatDate(e.endAt) : '-'}
+                </span>
                 <div className="text-right py-1">
                   <span
                     className={`text-xs text-white rounded-xl border border-solid ${e.isActive ? isActiveClass : isInactiveClass} py-1 px-3 cursor-pointer`}

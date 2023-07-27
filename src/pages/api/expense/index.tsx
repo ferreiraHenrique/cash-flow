@@ -38,21 +38,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method == "POST") {
-    const { name, baseAmount, startAt: _startAt } = JSON.parse(req.body)
+    const { name, baseAmount, startAt: _startAt, endAt: _endAt } = JSON.parse(req.body)
 
     const startAt = new Date(_startAt)
 
-    const expense = await prisma.expense.create({
-      data: { name, baseAmount, userId, startAt }
-    })
+    let data: any = {}
+    let filterStartAt: any = {}
+
+    if (_endAt) {
+      const endAt = new Date(_endAt)
+      data = { name, baseAmount, userId, startAt, endAt }
+      filterStartAt = {
+        gte: new Date(startAt.getFullYear(), startAt.getMonth()),
+        lte: new Date(endAt.getFullYear(), endAt.getMonth())
+      }
+    } else {
+      data = { name, baseAmount, userId, startAt }
+      filterStartAt = {
+        gte: new Date(startAt.getFullYear(), startAt.getMonth())
+      }
+    }
+
+    const expense = await prisma.expense.create({ data })
 
     const months = await prisma.month.findMany({
-      where: {
-        userId,
-        startAt: {
-          gte: new Date(startAt.getFullYear(), startAt.getMonth())
-        }
-      }
+      where: { userId, startAt: filterStartAt }
     })
 
     const transactions = months.map(m => (
