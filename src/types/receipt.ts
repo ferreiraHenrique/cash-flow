@@ -6,6 +6,7 @@ export interface IReceipt {
   name: string
   baseAmount: number
   startAt: Date
+  endAt?: Date
   isActive: boolean
   create: () => Promise<boolean>
   update: () => Promise<boolean>
@@ -16,6 +17,7 @@ export class Receipt implements IReceipt {
   name: string;
   baseAmount: number;
   startAt: Date
+  endAt?: Date;
   isActive: boolean;
 
   constructor(data?: any) {
@@ -26,6 +28,16 @@ export class Receipt implements IReceipt {
       this.baseAmount = data.baseAmount
     } else {
       this.baseAmount = unformatCurrency(data?.baseAmount?.toString() ?? '0')
+    }
+
+    if (data?.endAt) {
+      if (data.endAt instanceof Date) {
+        this.endAt = data.endAt
+      } else if (typeof data.endAt == 'string' && data.endAt.includes('T')) {
+        this.endAt = new Date(data.endAt)
+      } else {
+        this.endAt = new Date(`${data.endAt} 00:00`)
+      }
     }
 
     if (data?.startAt instanceof Date) {
@@ -52,6 +64,7 @@ export class Receipt implements IReceipt {
           name: this.name,
           baseAmount: this.baseAmount,
           startAt: this.startAt,
+          endAt: this.endAt,
         })
       })
       if (res.status != 201) {

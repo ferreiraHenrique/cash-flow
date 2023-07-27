@@ -114,7 +114,14 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, userId: st
     const m = year.months[i]
 
     const receipts = await prisma.receipt.findMany({
-      where: { userId, isActive: true, startAt: { lte: m.startAt } }
+      where: {
+        userId,
+        isActive: true,
+        OR: [
+          { startAt: { lte: m.startAt }, endAt: null },
+          { startAt: { lte: m.startAt }, endAt: { gte: m.startAt } },
+        ],
+      }
     })
     transactions = [
       ...transactions,

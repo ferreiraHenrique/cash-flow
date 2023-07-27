@@ -37,30 +37,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method == 'POST') {
-    const { name, baseAmount, startAt: _startAt } = JSON.parse(req.body)
+    const { name, baseAmount, startAt: _startAt, endAt: _endAt } = JSON.parse(req.body)
 
     const startAt = new Date(_startAt)
 
-    const receipt = await prisma.receipt.create({
-      data: { name, baseAmount, userId, startAt }
-    })
+    let data: any = {}
+    let filterStartAt: any = {}
+
+    if (_endAt) {
+      const endAt = new Date(_endAt)
+      data = { name, baseAmount, userId, startAt, endAt }
+      filterStartAt = {
+        gte: new Date(startAt.getFullYear(), startAt.getMonth()),
+        lte: new Date(endAt.getFullYear(), endAt.getMonth())
+      }
+      filterStartAt.lte = new Date(_endAt)
+    } else {
+      data = { name, baseAmount, userId, startAt }
+      filterStartAt = {
+        gte: new Date(startAt.getFullYear(), startAt.getMonth())
+      }
+    }
+
+    const receipt = await prisma.receipt.create({ data })
 
     const months = await prisma.month.findMany({
-      where: {
-        userId,
-        startAt: {
-          gte: new Date(startAt.getFullYear(), startAt.getMonth())
-        }
-      }
+      where: { userId, startAt: filterStartAt }
     })
 
     const transactions = months.map(m => (
       { name, amount: baseAmount, discount: 0, isCredit: true, monthId: m.id }
     ))
-
-    await prisma.monthTransaction.createMany({
-      data: transactions
-    })
+    if (transactions.length) {
+      await prisma.monthTransaction.createMany({ data: transactions })
+    }
 
     res.status(201).json({ receipt })
     return
