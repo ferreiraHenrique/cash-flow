@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { Month } from "@/types/month";
 import { CreditCard } from "@/types/creditCard";
 import loadCreditCards from "@/utils/loadCreditCards";
+import loadFinancings from "@/utils/loadFinancings";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -63,6 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const cards = await loadCreditCards(userId)
     month.addCreditCards(cards)
+
+    const financings = await loadFinancings(userId)
+    month.addFinancings(financings)
 
     res.status(200).json({ month })
     return

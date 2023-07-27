@@ -9,6 +9,7 @@ export interface IMonthTransaction {
   discount: number
   isCredit: boolean
   monthId: string
+  canDelete: boolean
   create: () => Promise<boolean>
   delete: () => Promise<boolean>
   update: () => Promise<boolean>
@@ -25,6 +26,7 @@ export class MonthTransaction implements IMonthTransaction {
   discount: number
   isCredit: boolean
   monthId: string
+  canDelete: boolean;
 
   constructor(data?: any) {
     if (data?.id) {
@@ -53,6 +55,11 @@ export class MonthTransaction implements IMonthTransaction {
     }
 
     this.monthId = data?.monthId
+    this.canDelete = true
+
+    if (typeof data?.canDelete === 'boolean') {
+      this.canDelete = data.canDelete
+    }
   }
 
   async create(): Promise<boolean> {

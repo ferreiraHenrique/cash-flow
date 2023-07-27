@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import loadCreditCards from "@/utils/loadCreditCards";
 import { Year } from "@/types/year";
+import loadFinancings from "@/utils/loadFinancings";
 
 
 
@@ -38,6 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method == 'GET') {
     const cards = await loadCreditCards(userId)
+    const financings = await loadFinancings(userId)
 
     const _year = await prisma.year.findFirst({
       where: { id, userId: user.id },
@@ -46,6 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const year = new Year(_year)
     year.months = year.months.map(m => {
       m.addCreditCards(cards)
+      m.addFinancings(financings)
       return m
     })
 
