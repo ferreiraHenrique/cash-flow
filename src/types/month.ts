@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IMonthTransaction, MonthTransaction } from './monthTransaction';
 import { CreditCard, ICreditCard } from './creditCard';
+import { IFinancing } from './financing';
 
 export interface IMonth {
   id: string
@@ -17,6 +18,7 @@ export interface IMonth {
   calcTotalCredit: () => number
   calcTotalDebit: () => number
   addCreditCards: (cards: ICreditCard[]) => void
+  addFinancings: (financings: IFinancing[]) => void
 }
 
 
@@ -164,7 +166,25 @@ export class Month implements IMonth {
         isCredit: false,
       }))
     })
-  };
+  }
+
+  addFinancings(financings: IFinancing[]) {
+    financings.forEach(f => {
+      f.installments.map(i => {
+        if (
+          i.date.getFullYear() == this.startAt.getFullYear() &&
+          i.date.getMonth() == this.startAt.getMonth()
+        ) {
+          this.transactions.push(new MonthTransaction({
+            name: `${f.name} - ${i.installmentNumber}/${f.numberOfInstallments}`,
+            amount: i.amount,
+            isCredit: false,
+            canDelete: false,
+          }))
+        }
+      })
+    })
+  }
 }
 
 export type MonthsContextType = {

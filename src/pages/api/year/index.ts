@@ -7,6 +7,7 @@ import { CreditCard } from "@/types/creditCard";
 import { MonthTransaction } from "@/types/monthTransaction";
 import loadCreditCards from "@/utils/loadCreditCards";
 import { getMonthLabel } from "@/helpers/formatDate";
+import loadFinancings from "@/utils/loadFinancings";
 
 
 
@@ -38,6 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { byLabel } = req.query
 
     const cards = await loadCreditCards(userId)
+    const financings = await loadFinancings(userId)
 
     if (typeof byLabel == 'string') {
       const _year = await prisma.year.findFirst({
@@ -48,6 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const year = new Year(_year)
       year.months = year.months.map(m => {
         m.addCreditCards(cards)
+        m.addFinancings(financings)
         return m
       })
 
@@ -64,6 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const months = y.months.map(m => {
         const month = new Month(m)
         month.addCreditCards(cards)
+        month.addFinancings(financings)
         return month
       })
 

@@ -90,13 +90,15 @@ export default function TransactionList() {
                   >
                     <FontAwesomeIcon icon={faEdit} />
                   </a>
-                  <a
-                    href="#"
-                    className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250"
-                    onClick={() => handleRemove(t)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </a>
+                  {t.canDelete &&
+                    <a
+                      href="#"
+                      className="opacity-60 hover:opacity-80 hover:text-red-600 transition-all ease-in duration-250"
+                      onClick={() => handleRemove(t)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </a>
+                  }
                 </div>
               </li>
               <hr key={`hr-${t.id}`} className="my-2" />
